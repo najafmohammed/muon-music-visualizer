@@ -1,0 +1,37 @@
+.stats-info-container {
+  display: grid;
+  justify-content: space-around;
+  width: 100%;
+  grid-template-columns: 1fr 1fr;
+  grid-row: auto auto;
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
+}
+.stat-info-element {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 10px;
+}
+.stats-title {
+  padding: 5px;
+  margin: 10px 0;
+  font-size: 1.2rem;
+  text-align: center;
+}
+.stats-display {
+  transition: all 0.3s ease-in-out;
+  visibility: hidden;
+  opacity: 0;
+  color: var(--textColor);
+  width: 350px;
+  height: 260px;
+  border-radius: var(--borderRadius);
+  background: var(--paperColorDark);
+}
+.stats-grid-container {
+  display: grid;
+  grid-auto-flow: column;
+  grid-row: 1;
+  justify-content: space-around;
+  row-gap: 50px;
+}

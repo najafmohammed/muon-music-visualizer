@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Muon Music Visualizer</title>
+  </head>
+
+  <body>
+    <div class="nav">
+      <div class="nav-container"></div>
+    </div>
+
+    <div class="side-nav-container">
+      <div class="side-nav-element-container">
+        <label for="thefile" class="file">
+          <div class="side-nav-element" id="local-file"></div>
+          <div class="side-nav-text">Local Files</div>
+          <input type="file" id="thefile" accept="audio/*|video/*" />
+        </label>
+      </div>
+      <div class="side-nav-element-container" id="searchModalButton">
+        <div id="searchModalIcon" class="side-nav-element"></div>
+        <div class="side-nav-text">Search</div>
+      </div>
+      <div class="side-nav-element-container">
+        <div class="side-nav-element"></div>
+        <div class="side-nav-text">Info</div>
+      </div>
+      <div class="side-nav-element-container">
+        <div class="side-nav-element"></div>
+        <div class="side-nav-text">Visualizations</div>
+      </div>
+    </div>
+
+    <div id="searchModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close">&times;</span>
+          <h2>Search in NCS</h2>
+          <div class="search-wrapper">
+            <div class="search-container">
+              <input
+                type="text"
+                placeholder="Search in NCS"
+                id="search"
+                class="search"
+              />
+              <button
+                title="search"
+                type="submit"
+                id="searchButton"
+                class="search-button"
+              >
+                <div class="search-icon" alt="search"></div>
+              </button>
+            </div>
+            <span class="search-info">
+              &#9432; Download song and play locally</span
+            >
+            <span class="search-info"> &#9432; Search is currenly broken</span>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="loader-container" id="search-loader">
+            <div class="loader"></div>
+            <p>Loading Please Wait</p>
+          </div>
+          <div
+            class="search-results-container"
+            id="search-results-container"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-container">
+      <div class="action-bar-container">
+        <div class="music-control">
+          <video
+            class="album-art"
+            id="video-frame"
+            width="300px"
+            height="auto"
+          ></video>
+          <div id="album-art-image" alt="album art"></div>
+          <div class="audio-control">
+            <img class="play-audio icon" alt="play" id="play-audio" />
+            <div class="slidecontainer volume">
+              <input
+                title="slider"
+                type="range"
+                min="0"
+                max="100"
+                step="1"
+                value="80"
+                class="slider"
+                id="volume"
+              />
+              <img alt="volumeIcon" id="volumeIcon" class="icon" />
+              <span id="volumeText">80</span>
+            </div>
+          </div>
+          <div class="file-info-container">
+            <div id="file-name"></div>
+            <div id="file-type"></div>
+            <div id="file-size"></div>
+          </div>
+        </div>
+
+        <div class="action-end-container">
+          <div class="stats-display" id="stats-display">
+            <div class="stats-title">Statistics</div>
+
+            <div class="stats-grid-container">
+              <div class="grid-element">
+                <div id="grid-bass">0</div>
+                <div class="sub-text">Bass</div>
+              </div>
+              <div class="grid-element">
+                <div id="grid-treble">0</div>
+                <div class="sub-text">treble</div>
+              </div>
+              <div class="grid-element">
+                <div id="grid-delta">0</div>
+                <div class="sub-text">delta</div>
+              </div>
+              <div class="grid-element">
+                <div id="grid-core">0</div>
+                <div class="sub-text">core</div>
+              </div>
+            </div>
+            <div class="equalizer-wrapper">
+              <div class="equalizer-container">
+                <div class="equalizer-button-container">
+                  <div id="equalizer-top-align"></div>
+                  <div id="equalizer-center-align"></div>
+                  <div id="equalizer-bottom-align"></div>
+                </div>
+                <div class="equalizer" id="equalizer"></div>
+              </div>
+              <div class="slidecontainer">
+                <input
+                  title="slider"
+                  type="range"
+                  min="16"
+                  max="64"
+                  step="8"
+                  value="32"
+                  class="slider"
+                  id="eqBarsSlider"
+                />
+                <span id="eqBarsSliderText"></span>
+              </div>
+            </div>
+          </div>
+          <div class="credits" id="credits">
+            <a target="blank" rel="noreferrer noopener" href="#">
+              Muon 🎵 Visualizer</a
+            >
+            <a
+              target="blank"
+              rel="noreferrer noopener"
+              href="https://github.com/najafmohammed"
+            >
+              Made with ❤️ by Najaf Mohammed
+            </a>
+            <a target="blank" rel="noreferrer noopener" href="https://ncs.io/">
+              Search⚡NCS
+            </a>
+          </div>
+          <div class="options-container">
+            <img
+              alt="pause"
+              class="pause-animation icon"
+              id="control-animation"
+            />
+            <img class="stats icon" id="stats" alt="stats" />
+            <img
+              alt="toggle Fullscreen"
+              class="immersive icon"
+              id="toggle-fullscreen"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="waveform-container">
+        <div id="current-time" class="time-display"></div>
+        <div id="waveform" class="waveform"></div>
+        <div id="duration" class="time-display"></div>
+      </div>
+    </div>
+    <canvas class="webgl"></canvas>
+  </body>
+</html>

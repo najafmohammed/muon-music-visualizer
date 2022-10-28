@@ -1,0 +1,49 @@
+.equalizer {
+  width: 91%;
+  height: 110px;
+  align-items: center;
+  justify-content: space-evenly;
+  display: flex;
+}
+.equalizer .bar {
+  width: 2px;
+  height: 5px;
+  border-radius: var(--borderRadius);
+  background-color: var(--textColor);
+}
+.equalizer-container {
+  display: flex;
+  height: 110px;
+}
+.equalizer-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 137px;
+}
+.equalizer-button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.equalizer-button-container > div {
+  text-align: center;
+  color: var(--textColor);
+  border-radius: var(--borderRadius);
+  background-color: var(--paperColorDark);
+  border: none;
+  cursor: pointer;
+  margin: 5px;
+  width: 20px;
+  height: 20px;
+}
+.equalizer-button-container > div:nth-child(1) {
+  background-image: url("../../static/images/align-top.png");
+}
+.equalizer-button-container > div:nth-child(2) {
+  background-image: url("../../static/images/align-center.png");
+}
+.equalizer-button-container > div:nth-child(3) {
+  background-image: url("../../static/images/align-bottom.png");
+}

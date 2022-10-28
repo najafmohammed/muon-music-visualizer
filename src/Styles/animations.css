@@ -1,0 +1,48 @@
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(360deg);
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+  }
+}
+@keyframes spin {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@-webkit-keyframes halfSpinInverted {
+  0% {
+    -webkit-transform: rotate(360deg);
+    filter: invert(0);
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+    filter: invert(1);
+  }
+}
+@keyframes halfSpinInverted {
+  0% {
+    transform: rotate(360deg);
+    filter: invert(0);
+  }
+  100% {
+    transform: rotate(0deg);
+    filter: invert(1);
+  }
+}
+
+@keyframes reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}

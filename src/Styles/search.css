@@ -1,0 +1,116 @@
+.search {
+  height: 40px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: var(--borderRadius);
+  color: var(--textColor);
+  border: 1px solid var(--textColor);
+  background-color: var(--paperColorDark);
+  width: 40%;
+}
+.search-button {
+  height: 30px;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+}
+.search-icon {
+  height: 30px;
+  width: 30px;
+  background-image: url("../../static/images/search.png");
+}
+.search-info {
+  opacity: 0.7;
+  text-align: center;
+}
+.search-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20px;
+}
+.search-container {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  padding-bottom: 10px;
+}
+
+.search-result-error {
+  width: 100%;
+  font-size: large;
+  text-align: center;
+}
+.search-result-container {
+  width: 100%;
+  background-image: linear-gradient(to right, red, #000);
+  padding: 5px;
+}
+
+.search-result {
+  border-radius: var(--borderRadius);
+  display: flex;
+  opacity: 0;
+  width: 100%;
+  margin-bottom: 10px;
+  animation: reveal 0.1s ease-in;
+  animation-fill-mode: forwards;
+}
+#search-result-preview {
+  display: inline;
+}
+.search-result-info-container {
+  display: flex;
+  width: 100%;
+  padding: 5px;
+  color: white;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.search-result-info-container > div {
+  background-color: var(--bgColor);
+  width: -moz-fit-content;
+  width: fit-content;
+  border-radius: var(--borderRadius);
+  padding: 10px 15px;
+}
+.search-result-tags-container {
+  margin: 5px 0;
+}
+.search-result-artist {
+  margin-top: 5px;
+}
+.search-result-tag {
+  display: inline-block;
+  border-radius: var(--borderRadius);
+  padding: 5px;
+  margin: 5px;
+}
+.search-result-image {
+  width: 150px;
+  border-radius: var(--borderRadius);
+  object-fit: cover;
+}
+.search-result-play-container {
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 25px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.39);
+  filter: invert(1);
+  border-radius: var(--borderRadius);
+}
+.search-result-play-loader {
+  display: flex;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-result-play:hover {
+  transform: scale(1.2);
+}
