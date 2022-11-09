@@ -19,10 +19,9 @@ export const generateParticlesSpiral = (
   isPlaying
 ) => {
   points = roundTo3(points);
-
   const positions = new Float32Array(points * 3);
   const scales = new Float32Array(points);
-  const colors = [];
+  const colors = new Float32Array(points * 3);
   const color = new THREE.Color();
   const angleFromOrigin = new Float32Array(points);
 
@@ -62,20 +61,25 @@ export const generateParticlesSpiral = (
     );
   }
 
-  const geometry = new THREE.BufferGeometry();
+  // const geometry = new THREE.BufferGeometry();
+  const geometry = new THREE.InstancedBufferGeometry();
   geometry.setAttribute(
     "customColor",
-    new THREE.Float32BufferAttribute(colors, 3)
+    new THREE.InstancedBufferAttribute(colors, 3)
   );
   geometry.setAttribute(
     "angleFromOrigin",
-    new THREE.BufferAttribute(angleFromOrigin, 1)
+    new THREE.InstancedBufferAttribute(angleFromOrigin, 1)
   );
-  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute(
+    "position",
+    new THREE.InstancedBufferAttribute(positions, 3)
+  );
   geometry.setAttribute(
     "scale",
-    new THREE.BufferAttribute(isPlaying ? prevScales : scales, 1)
+    new THREE.InstancedBufferAttribute(isPlaying ? prevScales : scales, 1)
   );
+  geometry.setIndex(new THREE.BufferAttribute(new Uint16Array([1]), 1));
   return geometry;
 };
 export const generateParticles = (seperation) => {
@@ -100,7 +104,7 @@ export const generateParticles = (seperation) => {
       j++;
     }
   }
-  const geometry = new THREE.BufferGeometry();
+  const geometry = new THREE.InstancedBufferGeometry();
   geometry.setAttribute(
     "customColor",
     new THREE.Float32BufferAttribute(colors, 3)
