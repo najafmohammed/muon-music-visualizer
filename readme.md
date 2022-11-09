@@ -5,6 +5,11 @@ A music visualizer using 3.js.
 - This is a project to test out 3.js, dat.gui, wavesurfer and gsap.
 - There may be a lot of bugs or optimizations possible, so please feel free to give any kind of suggestions on what to do.
 
+
+> ### ❗ WARNING 
+>
+> **The visualizations may potentially trigger seizures for people with photosensitive epilepsy. Viewer discretion is advised**
+
 ## To get started
 
 ```bash
