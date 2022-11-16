@@ -6,6 +6,7 @@ import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import materials from "./materials";
 import { generateParticlesSpiral } from "./geometries";
 
+// optimise code to use shaders more, time factor integraded into it.
 const sizes = {
   width: window.innerWidth,
   height: window.innerHeight,

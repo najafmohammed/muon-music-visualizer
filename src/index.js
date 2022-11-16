@@ -44,11 +44,10 @@ let params = {
     colorSpectrum: 0,
     aperture: 3,
     sineCounterMultiplier: 1,
-    idleMultiplier: 0.2,
-    particlesRotation: true,
+    idleMultiplier: 0.27,
     particleMirror: true,
     contracted: false,
-    radiusMultipler: -0.299,
+    radiusMultiplier: 0.202,
     dynamicRadius: true,
     updateLockInterval: 0.05,
     deltaResponseLimit: 0.005,
@@ -68,7 +67,6 @@ let params = {
     prevColorSpectrum: 0,
     prevAperture: 0,
     prevDreamCatcher: false,
-    prevRadiusMultipler: 0.99,
     prevContracted: false,
   };
 const vizInit = async () => {
@@ -145,8 +143,8 @@ const vizInit = async () => {
       composer.render();
 
       if (!wavesurfer.isPlaying()) {
-        params.radiusMultipler =
-          (params.radiusMultipler + 0.0001 * timeDelta) % 1;
+        params.radiusMultiplier =
+          (params.radiusMultiplier + 0.0001 * timeDelta) % 1;
       } else {
         duration.innerHTML = Operations.formatTime(wavesurfer.getDuration());
         currentTime.innerHTML = Operations.formatTime(
@@ -160,10 +158,10 @@ const vizInit = async () => {
 
       if (params.particleMirror) {
         scene.add(particles2);
-        particles2.visibility = false;
       } else {
         scene.remove(particles2);
       }
+
       CoreControls.redrawGeometry(
         wavesurfer.isPlaying(),
         prevParams,
@@ -171,6 +169,7 @@ const vizInit = async () => {
         particles,
         particles2
       );
+
       CoreControls.sineWavePropagation(
         wavesurfer,
         particles,
@@ -199,15 +198,8 @@ const vizInit = async () => {
       if (exponentialBassScaler > maxExponentialScaler)
         exponentialBassScaler = maxExponentialScaler;
 
-      const rotation =
-        exponentialBassScaler * exponentialTrebleScaler * timeDelta * 50;
-      if (params.particlesRotation) {
-        particles.rotation.z -= rotation;
-        particles2.rotation.z += rotation;
-      }
-
       if (params.RGBfy) {
-        const hue = CoreControls.hueControl(coreScaler * _delta * timeDelta);
+        const hue = CoreControls.hueControl(_delta * timeDelta);
         particles.material.uniforms.color.value.setHSL(hue, 0.9, 0.7);
         particles2.material.uniforms.color.value.setHSL(hue, 0.9, 0.7);
       }
