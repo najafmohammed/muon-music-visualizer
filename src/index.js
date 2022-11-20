@@ -49,7 +49,7 @@ let params = {
     contracted: false,
     radiusMultiplier: 0.202,
     dynamicRadius: true,
-    updateLockInterval: 0.05,
+    updateLockInterval: 0.07,
     deltaResponseLimit: 0.005,
     visualizationPreset: true,
     reset: () => gsapControls.reset(camera, params),
@@ -63,11 +63,12 @@ let params = {
   },
   sineCounter = 0,
   prevParams = {
-    prevMaxPoints: 0,
-    prevColorSpectrum: 0,
-    prevAperture: 0,
-    prevDreamCatcher: false,
-    prevContracted: false,
+    maxPoints: 0,
+    colorSpectrum: 0,
+    aperture: 0,
+    radiusMultiplier: 0,
+    dreamCatcher: false,
+    contracted: false,
   };
 const vizInit = async () => {
   DomControls.initSearchModal();
@@ -144,7 +145,7 @@ const vizInit = async () => {
 
       if (!wavesurfer.isPlaying()) {
         params.radiusMultiplier =
-          (params.radiusMultiplier + 0.0001 * timeDelta) % 1;
+          (params.radiusMultiplier + 0.00012 * timeDelta) % 1;
       } else {
         duration.innerHTML = Operations.formatTime(wavesurfer.getDuration());
         currentTime.innerHTML = Operations.formatTime(
@@ -179,7 +180,7 @@ const vizInit = async () => {
         params,
         exponentialBassScaler,
         exponentialTrebleScaler,
-        coreScaler
+        prevParams
       );
 
       sineCounter += Math.abs(_delta * 100) * timeDelta;

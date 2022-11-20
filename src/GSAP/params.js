@@ -65,7 +65,7 @@ export const gsapControlParams = {
     { param: "particleMirror", value: true },
     { param: "radiusMultiplier", value: 0.202 },
     { param: "contracted", value: true },
-    { param: "updateLockInterval", value: 0.05 },
+    { param: "updateLockInterval", value: 0.07 },
     { param: "deltaResponseLimit", value: 0.005 },
   ],
 };

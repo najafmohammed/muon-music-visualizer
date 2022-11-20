@@ -4,7 +4,9 @@ import { CoreControls } from ".";
 import { GUIControls } from "../GUI";
 
 import gsap from "gsap";
-
+//TODO update distortion visualization
+// add all these updates and then commit with msg of updated the visualization params
+// begin the shader optimisations
 export const sineWavePropagation = (
   wavesurfer,
   particles,
@@ -14,8 +16,13 @@ export const sineWavePropagation = (
   params,
   exponentialBassScaler,
   exponentialTrebleScaler,
-  coreScaler
+  prevParams
 ) => {
+  let radiusMultiplierIsChanged = false;
+  if (prevParams.radiusMultiplier !== params.radiusMultiplier) {
+    radiusMultiplierIsChanged = true;
+    prevParams.radiusMultiplier = params.radiusMultiplier;
+  }
   const positions = particles.geometry.attributes.position.array;
   const positions2 = particles2.geometry.attributes.position.array;
   const scales = particles.geometry.attributes.scale.array;
@@ -36,18 +43,19 @@ export const sineWavePropagation = (
     const z = positions[i + 2];
     const angle = angleFromOrigin[ix];
     const distFromOrigin = distanceFromOrigin[ix];
+    if (radiusMultiplierIsChanged) {
+      const radii = radiuses[ix];
+      positions[i] = positions2[i] =
+        Math.sin(ix * params.radiusMultiplier) * radii;
+      positions[i + 1] = positions2[i + 1] =
+        Math.cos(ix * params.radiusMultiplier) * radii;
+    }
 
-    const radii = radiuses[ix];
-    positions[i] = positions2[i] =
-      Math.sin(ix * params.radiusMultiplier) * radii;
-    positions[i + 1] = positions2[i + 1] =
-      Math.cos(ix * params.radiusMultiplier) * radii;
     positions[i] === 0 && (scales[j] = scales2[j] = 0);
     if (wavesurfer.isPlaying()) {
       point = Math.floor(
         Operations.map(j, 0, params.maxPoints, 0, freqData.length)
       );
-      //to do move dist from origin as the frequencey of wave
       const beatScaler =
         exponentialTrebleScaler * 3.14 + exponentialBassScaler * 6 + 0.3;
       const positionSinefactor =
@@ -77,9 +85,6 @@ export const sineWavePropagation = (
     if (positions[i + 2] < 1) {
       scales[j] = scales2[j] = 0.141;
     }
-    // if (scales[j] > 2.5 && params.contracted) {
-    //   scales[j] = scales2[j] = 2.5;
-    // }
 
     if (!params.contracted) {
       scales[j] = scales2[j] = scales[j] * 1.2;
@@ -95,8 +100,6 @@ export const sineWavePropagation = (
 
   particles.geometry.attributes.position.needsUpdate = true;
   particles.geometry.attributes.scale.needsUpdate = true;
-  particles.geometry.attributes.customColor.needsUpdate = true;
-  particles2.geometry.attributes.customColor.needsUpdate = true;
   particles2.geometry.attributes.position.needsUpdate = true;
   particles2.geometry.attributes.scale.needsUpdate = true;
 };
@@ -105,6 +108,7 @@ export const wavePresetController = (params, _delta) => {
   let updateLockTimeout = setTimeout(() => {
     globalParams.updateLock = !globalParams.updateLock;
   }, params.updateLockInterval * 100);
+
   data === "false" &&
     GUIControls.controlFolder
       .add(params, "updateLockInterval")
