@@ -60,6 +60,11 @@ const formatTime = (time) => {
   hours > 0 && (finalTime = _hours + finalTime);
   return finalTime;
 };
+const roundTo3 = (n) => {
+  if (n > 0) return Math.ceil(n / 3.0) * 3;
+  else if (n < 0) return Math.floor(n / 3.0) * 3;
+  else return 3;
+};
 
 export const Operations = {
   map,
@@ -70,4 +75,5 @@ export const Operations = {
   distanceFromOrigin,
   angleFromOrigin,
   formatTime,
+  roundTo3,
 };

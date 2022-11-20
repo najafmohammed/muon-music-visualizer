@@ -46,7 +46,7 @@ export const gsapControlParams = {
   cameraIntroMaxPoints: {
     duration: 0.5,
     maxPoints: 720 * 7,
-    delay: 1,
+    delay: 1.5,
   },
   cameraIntroColorSpectrum: {
     duration: 0.5,
@@ -60,12 +60,12 @@ export const gsapControlParams = {
   },
   paramsResetValues: [
     { param: "colorSpectrum", value: 18 },
-    { param: "maxPoints", value: 7920 },
+    { param: "maxPoints", value: 5040 },
     { param: "apertureParticle", value: 3 },
     { param: "particleMirror", value: true },
-    { param: "radiusMultipler", value: 0.838 },
+    { param: "radiusMultiplier", value: 0.202 },
     { param: "contracted", value: true },
-    { param: "updateLockInterval", value: 0.05 },
+    { param: "updateLockInterval", value: 0.07 },
     { param: "deltaResponseLimit", value: 0.005 },
   ],
 };

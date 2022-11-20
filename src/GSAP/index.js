@@ -3,7 +3,7 @@ import { gsapControlParams } from "./params";
 export const gsapControls = {
   cameraIntro: (camera, params) => {
     camera.scale.set(0, 0, 0);
-    camera.rotation.set(0, 0, -4);
+    camera.rotation.set(0, 0, -6);
     camera.position.set(0, 0, 10);
     params.maxPoints = 360;
     gsap.to(camera.scale, gsapControlParams.cameraIntroScale);

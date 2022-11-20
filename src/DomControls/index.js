@@ -5,7 +5,7 @@ import { Equalizer } from "./equalizer";
 import { updateFileData } from "./file";
 import { initVideo } from "./video";
 import { initSearch } from "./input";
-import { initSearchModal } from "./modal";
+import { initSearchModal } from "./searchModal";
 export const DomControls = {
   sliders,
   playAudioButtonControl,
