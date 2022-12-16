@@ -48,7 +48,7 @@ const gui = new GUI(),
         name: "radiusMultiplier",
         min: 0.01,
         max: 1,
-        step: 0.001,
+        step: 0.0001,
         folder: gui,
       },
     ],
@@ -71,14 +71,6 @@ const gui = new GUI(),
     );
     controlsGUI.guiControls.forEach((control) => gui.add(params, control));
     gui.add(params, "sideView").name("side view");
-    controlFolder
-      .add(params, "contracted")
-      .onFinishChange((_contracted) => {
-        params.radiusMultiplier = 0.202;
-        params.maxPoints = _contracted ? 720 * 15 : 720 * 5;
-      })
-      .listen()
-      .name("Contract");
   };
 
 export const GUIControls = {

@@ -46,7 +46,6 @@ let params = {
     sineCounterMultiplier: 1,
     idleMultiplier: 0.27,
     particleMirror: true,
-    contracted: false,
     radiusMultiplier: 0.202,
     dynamicRadius: true,
     updateLockInterval: 0.07,
@@ -68,7 +67,6 @@ let params = {
     aperture: 0,
     radiusMultiplier: 0,
     dreamCatcher: false,
-    contracted: false,
   };
 const vizInit = async () => {
   DomControls.initSearchModal();

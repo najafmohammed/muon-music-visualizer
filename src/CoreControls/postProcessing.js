@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 
 const params = {
-  bloomStrength: 2,
+  bloomStrength: 3,
   bloomThreshold: 0.02,
   bloomRadius: 0.7,
 };

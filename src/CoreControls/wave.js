@@ -37,18 +37,24 @@ export const sineWavePropagation = (
   let freqData = [];
   dataArray.forEach((data) => data > 0.1 && freqData.push(data));
   const distortion = true;
+
   for (let ix = 0; ix < Operations.roundTo3(params.maxPoints); ix++) {
     const x = positions[i];
     const y = positions[i + 1];
     const z = positions[i + 2];
     const angle = angleFromOrigin[ix];
     const distFromOrigin = distanceFromOrigin[ix];
+
     if (radiusMultiplierIsChanged) {
       const radii = radiuses[ix];
       positions[i] = positions2[i] =
         Math.sin(ix * params.radiusMultiplier) * radii;
       positions[i + 1] = positions2[i + 1] =
         Math.cos(ix * params.radiusMultiplier) * radii;
+
+      // new spiral
+      // positions[i] = positions2[i] += distFromOrigin * Math.sin(angle);
+      // positions[i + 1] = positions2[i + 1] += distFromOrigin * angle;
     }
 
     positions[i] === 0 && (scales[j] = scales2[j] = 0);
@@ -58,14 +64,17 @@ export const sineWavePropagation = (
       );
       const beatScaler =
         exponentialTrebleScaler * 3.14 + exponentialBassScaler * 6 + 0.3;
+      // EXPLOSION
+      /* 
+      const aperture = beatScaler;
+      positions[i] = positions2[i] =
+      positions[i] / Math.sin(ix + aperture * 1.4);
+      positions[i + 1] = positions2[i + 1] =
+      positions[i + 1] / Math.sin(ix + aperture * 1.4);
+      */
       const positionSinefactor =
         6 *
-        Math.cos(
-          distFromOrigin * 0.7 -
-            beatScaler * 2 -
-            sineCounter * 1.414 -
-            (distortion && Math.cos(y) * Math.sin(x))
-        );
+        Math.cos(distFromOrigin * 0.85 - beatScaler * 3 - sineCounter * 1.414);
       const radiateSineWave =
         positionSinefactor > 0 ? positionSinefactor : positionSinefactor * 2.7;
 
@@ -74,24 +83,26 @@ export const sineWavePropagation = (
             freqData[point] * 0.05 + radiateSineWave)
         : (positions[i + 2] = positions2[i + 2] = positionSinefactor + 0.05);
       scales[j] = scales2[j] = positions2[i + 2] * 0.141;
+      //special viz 2
+      // positions[i + 2] = positions2[i + 2] += Math.abs(1 - distFromOrigin) * 10;
+      // particles.rotation.z = particles2.rotation.z -= 0.000001;
+      // scales[j] = scales2[j] += distFromOrigin * 0.1;
     } else {
       positions[i + 2] = positions2[i + 2] =
-        3.14 * Math.sin(distFromOrigin - sineCounter);
+        3.14 *
+        Math.sin(
+          distFromOrigin -
+            sineCounter -
+            (distortion && Math.sin(y) * Math.cos(x))
+        );
       scales[j] = scales2[j] = positions[i + 2] * Math.abs(angle);
-      if (scales[j] > 3 && params.contracted) {
-        scales[j] = scales2[j] = 3;
+      if (scales[j] > 2.5) {
+        scales[j] = scales2[j] = 2.5;
       }
     }
+
     if (positions[i + 2] < 1) {
       scales[j] = scales2[j] = 0.141;
-    }
-
-    if (!params.contracted) {
-      scales[j] = scales2[j] = scales[j] * 1.2;
-    }
-
-    if (scales[j] > 3 && !params.contracted) {
-      scales[j] = scales2[j] = 3;
     }
 
     i += 3;
