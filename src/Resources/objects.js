@@ -47,11 +47,13 @@ export const Objects = {
 
   initComposer: (renderer, scene, camera) => {
     const bloomPass = CoreControls.BloomPass;
+    const afterImage = CoreControls.AfterImage;
     const composer = new EffectComposer(renderer);
     const renderScene = new RenderPass(scene, camera);
     composer.setSize(window.innerWidth, window.innerHeight);
     composer.addPass(renderScene);
     composer.addPass(bloomPass);
+    // composer.addPass(afterImage);
     return composer;
   },
   initResize: (camera, renderer, composer) => {

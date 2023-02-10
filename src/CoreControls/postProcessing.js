@@ -1,10 +1,11 @@
 import * as THREE from "three";
+import { AfterimagePass } from "three/examples/jsm/postprocessing/AfterimagePass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 
 const params = {
-  bloomStrength: 2,
+  bloomStrength: 2.5,
   bloomThreshold: 0.02,
-  bloomRadius: 0.7,
+  bloomRadius: 0.9,
 };
 
 export const BloomPass = new UnrealBloomPass(
@@ -13,3 +14,6 @@ export const BloomPass = new UnrealBloomPass(
   params.bloomRadius,
   params.bloomThreshold
 );
+
+export const AfterImage = new AfterimagePass();
+AfterImage.uniforms["damp"].value = 0.9;
