@@ -93,6 +93,17 @@ const gui = new GUI(),
         params.colorSpectrum = value ? 15 : 18;
         params.updateLockInterval = value ? 0.17 : 0.07;
       });
+
+    particleControlsFolder
+      .add(params, "fieldDistortion")
+      .min(1)
+      .max(20)
+      .step(0.1)
+      .listen()
+      .onChange((value) => {
+        params.updateLockInterval = value > 3 ? 0.17 : 0.07;
+      });
+
     controlsGUI.guiControls.forEach((control) => gui.add(params, control));
     gui.add(params, "sideView").name("side view");
   };
