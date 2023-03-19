@@ -64,13 +64,13 @@ export const sineWavePropagation = (
 
     const distFromOrigin = distanceFromOrigin[ix];
 
+    const radii = radiuses[ix];
     if (redrawGeom) {
-      const radii = radiuses[ix];
       positions[i] = positions2[i] =
         Math.sin(ix * params.radiusMultiplier) * radii * params.spacing;
       positions[i + 1] = positions2[i + 1] =
         Math.cos(ix * params.radiusMultiplier) * radii * params.spacing;
-
+      //TODO create a slider to switch between the presets
       // new spiral
       if (params.spiralVisualization) {
         const rand = 0;
@@ -101,31 +101,55 @@ export const sineWavePropagation = (
 
       const beatScaler =
         exponentialTrebleScaler * 3.14 + exponentialBassScaler * 6 + 0.7;
-      const positionSinefactor =
-        7.5 *
+      let positionSinefactor =
+        7 *
         Math.cos(
-          distFromOrigin * 0.85 -
-            beatScaler * 3 -
-            sineCounter * 1.414 -
+          distFromOrigin * 0.7 -
+            beatScaler * 4.14 -
+            sineCounter * 1.741 -
             (distortion &&
               !params.spiralVisualization &&
               Math.sin(y * params.distortionStrength) *
                 Math.cos(x * params.distortionStrength))
         );
-
       freqData[point]
         ? (positions[i + 2] = positions2[i + 2] =
             freqData[point] * 0.047 + positionSinefactor)
         : (positions[i + 2] = positions2[i + 2] = positionSinefactor + 0.05);
-      scales[j] = scales2[j] = positions2[i + 2] * 0.141;
+
+      if (!params.spiralVisualization && params.fieldDistortion !== 1) {
+        const additiveWaveComponent = (sign) => {
+          const prevWave = ix * params.radiusMultiplier;
+          const nextWave =
+            sineCounter * 0.1 + beatScaler * 0.01 + distFromOrigin * 0.7;
+
+          return (
+            (sign === 0 ? Math.sin(prevWave) : Math.cos(prevWave)) *
+            (radii +
+              params.fieldDistortion *
+                (sign === 0 ? Math.cos(nextWave) : Math.sin(nextWave)) +
+              freqData[point] * 0.01) *
+            params.spacing
+          );
+        };
+        positions[i] = positions2[i] = additiveWaveComponent(0);
+
+        positions[i + 1] = positions2[i + 1] = additiveWaveComponent(1);
+      }
+
+      scales[j] = scales2[j] = positions2[i + 2] * 0.17;
 
       // positions[i] = positions2[i] = positions2[i];
       // positions[i + 1] = positions2[i + 1] = positions2[i + 1];
 
       //special viz 2
       // positions[i + 2] = positions2[i + 2] += Math.abs(1 - distFromOrigin) * 10;
-      // particles.rotation.z = particles2.rotation.z -= 0.000001;
+      // particles.rotation.z = particles2.rotation.z -= Math.PI * 0.000002;
       // scales[j] = scales2[j] += distFromOrigin * 0.1;
+      // particles.rotation.z -=
+      //   (exponentialTrebleScaler + exponentialBassScaler) * 0.0001;
+      // particles2.rotation.z -=
+      //   (exponentialTrebleScaler + exponentialBassScaler) * 0.0001;
     } else {
       positions[i + 2] = positions2[i + 2] =
         3.14 *
@@ -186,15 +210,29 @@ export const wavePresetController = (params, _delta) => {
       params.radiusMultiplier += _delta;
       params.radiusMultiplier = (params.radiusMultiplier % 1) + 0.001;
     }
+    if (params.spiralVisualization || params.fieldDistortion) {
+      if (
+        params.visualizationPreset > CoreControls.newSpiral.length ||
+        params.visualizationPreset > CoreControls.fieldDistortion.length
+      )
+        visualizationPreset = 0;
+    }
+    const fieldDistortionActive = params.fieldDistortion > 3;
+    const newSpiral =
+      CoreControls.newSpiral[globalParams.visualserPresetCounter];
+    const fieldDistortion =
+      CoreControls.fieldDistortion[globalParams.visualserPresetCounter];
+    const vizPreset =
+      CoreControls.visualizationPresets[globalParams.visualserPresetCounter];
     gsap.to(params, {
       duration: params.updateLockInterval,
       ease: "power4.out",
       radiusMultiplier: params.visualizationPreset
         ? params.spiralVisualization
-          ? CoreControls.newSpiral[globalParams.visualserPresetCounter]
-          : CoreControls.visualizationPresets[
-              globalParams.visualserPresetCounter
-            ]
+          ? newSpiral
+          : fieldDistortionActive
+          ? fieldDistortion
+          : vizPreset
         : params.radiusMultiplier,
     });
     if (params.visualizationPreset) {
@@ -204,6 +242,8 @@ export const wavePresetController = (params, _delta) => {
         globalParams.visualserPresetCounter %
         (params.spiralVisualization
           ? CoreControls.newSpiral.length
+          : fieldDistortionActive
+          ? CoreControls.fieldDistortion.length
           : CoreControls.visualizationPresets.length);
     }
   }
