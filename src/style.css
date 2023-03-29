@@ -166,18 +166,38 @@ a:visited {
 .audio-control {
   display: flex;
 }
+.album-art-container {
+  transition: all 0.4s ease-in-out;
+
+  width: 300px;
+  opacity: 0.5;
+  width: 75%;
+  position: relative;
+  height: auto;
+  margin-bottom: 20px;
+  transform-origin: bottom left;
+}
+.album-art-container:hover {
+  scale: 2.5;
+  opacity: 1;
+}
 
 .album-art {
-  transition: all 0.4s ease-in-out;
+  bottom: 16.87px !important;
+  left: 25px !important;
+  clip-path: inset(0.5px 0.5px);
+}
+.album-art-common {
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 15px;
   overflow: hidden;
-  bottom: 25%;
+  display: block;
+  bottom: 10px;
+  left: 10px;
   position: absolute;
-  margin-bottom: 10px;
-  opacity: 0.5;
-  height: 100px;
-  width: 200px;
+}
+.album-art-ambient {
+  filter: blur(10px);
 }
 #album-art-image {
   display: none;
@@ -186,11 +206,6 @@ a:visited {
   border-radius: var(--borderRadius);
   background-image: url("../static/images/music.png");
   background-color: #021820a2;
-}
-.album-art:hover {
-  opacity: 1;
-  width: 700px;
-  height: 350px;
 }
 
 .file-info-container {
