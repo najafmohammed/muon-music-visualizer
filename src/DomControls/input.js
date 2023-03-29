@@ -83,6 +83,7 @@ const searchResultElement = (
 
   searchResultPlayLoader.addEventListener("click", (e) => {
     e.preventDefault();
+    console.log("search count");
     const audio = document.getElementById(`search-result-preview${index}`);
     if (audio.paused || !audio.currentTime) {
       params.currentPlaying && params.currentPlaying.pause();

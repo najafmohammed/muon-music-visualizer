@@ -168,7 +168,6 @@ a:visited {
 }
 .album-art-container {
   transition: all 0.4s ease-in-out;
-
   width: 300px;
   opacity: 0.5;
   width: 75%;
@@ -176,10 +175,6 @@ a:visited {
   height: auto;
   margin-bottom: 20px;
   transform-origin: bottom left;
-}
-.album-art-container:hover {
-  scale: 2.5;
-  opacity: 1;
 }
 
 .album-art {
@@ -199,6 +194,7 @@ a:visited {
 .album-art-ambient {
   filter: blur(10px);
 }
+
 #album-art-image {
   display: none;
   width: 128px;
