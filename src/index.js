@@ -50,7 +50,6 @@ let params = {
     updateLockInterval: 0.17,
     deltaResponseLimit: 0.005,
     visualizationPreset: true,
-    spiralVisualization: false,
     distortionStrength: 0.5,
     spacing: 1,
     fieldDistortion: 1,
@@ -70,7 +69,6 @@ let params = {
     aperture: 0,
     radiusMultiplier: 0,
     dreamCatcher: false,
-    spiralVisualization: true,
     spacing: 1,
   };
 const vizInit = async () => {
@@ -190,7 +188,7 @@ const vizInit = async () => {
         prevParams
       );
 
-      sineCounter += Math.abs(_delta * 300) * timeDelta;
+      sineCounter += Math.abs(_delta * 250) * timeDelta;
 
       CoreControls.wavePresetController(params, _delta, prevUpdateLockInterval);
 

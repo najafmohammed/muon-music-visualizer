@@ -16,6 +16,7 @@ export const generateParticlesSpiral = (
   points = Operations.roundTo3(points);
   const positions = new Float32Array(points * 3);
   const scales = new Float32Array(points);
+  const index = new Float32Array(points);
   const colors = new Float32Array(points * 3);
   const radii = new Float32Array(points);
   const color = new THREE.Color();
@@ -35,6 +36,7 @@ export const generateParticlesSpiral = (
 
     radii[ix] = radius;
     scales[ix] = 1;
+    index[ix] = ix;
 
     const { x, y } = { x: positions[pt], y: positions[pt + 1] };
     angleFromOrigin[ix] = Operations.angleFromOrigin(x, y);
@@ -58,6 +60,7 @@ export const generateParticlesSpiral = (
     new THREE.BufferAttribute(distFromOrigin, 1)
   );
   geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute("index", new THREE.BufferAttribute(index, 1));
   geometry.setAttribute(
     "scale",
     new THREE.BufferAttribute(isPlaying ? prevScales : scales, 1)
