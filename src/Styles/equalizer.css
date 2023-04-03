@@ -1,6 +1,7 @@
 .equalizer {
+  margin-top: 10px;
   width: 91%;
-  height: 110px;
+  height: 82px;
   align-items: center;
   justify-content: space-evenly;
   display: flex;

@@ -63,7 +63,7 @@ export const gsapControlParams = {
     { param: "maxPoints", value: 5040 },
     { param: "apertureParticle", value: 3 },
     { param: "particleMirror", value: true },
-    { param: "radiusMultiplier", value: 0.202 },
+    { param: "radiusMultiplier", value: 0.66 },
     { param: "updateLockInterval", value: 0.07 },
     { param: "deltaResponseLimit", value: 0.005 },
   ],

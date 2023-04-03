@@ -33,11 +33,13 @@ export const volumeButtonControl = (wavesurfer) => {
   });
 };
 
-export const playAudioButtonControl = (wavesurfer, video) =>
+export const playAudioButtonControl = (wavesurfer, video, ambient, bgVideo) =>
   playAudioButton.addEventListener("click", () => {
     isPaused = !isPaused;
     isPaused ? wavesurfer.play() : wavesurfer.pause();
     isPaused ? video.play() : video.pause();
+    isPaused ? ambient.play() : ambient.pause();
+    isPaused ? bgVideo.play() : bgVideo.pause();
   });
 
 const toggleFullscreenButtonConttrol = () =>
@@ -63,8 +65,8 @@ const statisticsButtonControl = () =>
       : (document.getElementById("credits").style.opacity = "1");
   });
 
-export const initButtonControls = (wavesurfer, video) => {
-  playAudioButtonControl(wavesurfer, video);
+export const initButtonControls = (wavesurfer, video, ambient, bgVideo) => {
+  playAudioButtonControl(wavesurfer, video, ambient, bgVideo);
   volumeButtonControl(wavesurfer);
   toggleFullscreenButtonConttrol();
   statisticsButtonControl();

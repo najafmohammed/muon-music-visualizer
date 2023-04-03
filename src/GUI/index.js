@@ -1,5 +1,4 @@
 import { GUI } from "dat.gui";
-import { redrawGeometry } from "../CoreControls/controls";
 
 const gui = new GUI(),
   controlFolder = gui.addFolder("Controls"),
@@ -27,7 +26,7 @@ const gui = new GUI(),
       {
         name: "maxPoints",
         min: 0,
-        max: 720 * 15,
+        max: 720 * 7,
         step: 360,
         folder: particleControlsFolder,
       },
@@ -84,15 +83,6 @@ const gui = new GUI(),
     controlsGUI.controls.forEach((control) =>
       controlFolder.add(params, control)
     );
-
-    controlFolder
-      .add(params, "spiralVisualization")
-      .listen()
-      .onChange((value) => {
-        params.reset();
-        params.colorSpectrum = value ? 15 : 18;
-        params.updateLockInterval = value ? 0.17 : 0.07;
-      });
 
     particleControlsFolder
       .add(params, "fieldDistortion")
