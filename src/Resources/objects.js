@@ -5,7 +5,7 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import materials from "./materials";
 import { generateParticlesSpiral } from "./geometries";
-import { Unifoms } from "../CoreControls/wave";
+import { Uniforms } from "../CoreControls/wave";
 
 // optimise code to use shaders more, time factor integraded into it.
 const sizes = {
@@ -72,8 +72,8 @@ export const Objects = {
       composer.setSize(sizes.width, sizes.height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-      Unifoms.resolution.value.x = renderer.domElement.width;
-      Unifoms.resolution.value.y = renderer.domElement.height;
+      Uniforms.resolution.value.x = renderer.domElement.width;
+      Uniforms.resolution.value.y = renderer.domElement.height;
     });
   },
 };

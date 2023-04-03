@@ -55,6 +55,15 @@ module.exports = {
           },
         ],
       },
+      // Glsl
+
+      {
+        test: /\.(glsl|vs|fs|vert|frag)$/,
+        exclude: /node_modules/,
+        use: ["raw-loader"],
+      },
+      // test: /\.glsl$/,
+      // use: [{ loader: "webpack-glsl" }],
 
       // Fonts
       {

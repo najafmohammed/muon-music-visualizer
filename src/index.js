@@ -31,7 +31,6 @@ let wavesurfer,
   particles2,
   scene,
   prevExponentialBassScalar = 0,
-  prevUpdateLockInterval = 0,
   pauseAnimation = false;
 sessionStorage.setItem("initUpdateLockInterval", "false");
 
@@ -45,7 +44,7 @@ let params = {
     sineCounterMultiplier: 1,
     idleMultiplier: 0.27,
     particleMirror: true,
-    radiusMultiplier: 0.202,
+    radiusMultiplier: 0.66,
     dynamicRadius: true,
     updateLockInterval: 0.17,
     deltaResponseLimit: 0.005,
@@ -132,7 +131,7 @@ const vizInit = async () => {
       exponentialTrebleScaler = audio.exponentialBassScaler;
       coreScaler > 1
         ? (sineCounter += coreScaler * 0.5 * timeDelta)
-        : (sineCounter += params.idleMultiplier * timeDelta * 15);
+        : (sineCounter += params.idleMultiplier * timeDelta * 7);
 
       wavesurfer.isPlaying &&
         buttonVariables.statsVisibility &&
@@ -159,7 +158,8 @@ const vizInit = async () => {
           ambient.currentTime = wavesurfer.getCurrentTime();
           bgVideo.currentTime = wavesurfer.getCurrentTime();
         });
-        particles2.rotation.y = Math.PI;
+        // particles2.rotation.z = Math.PI / 3;
+        // particles2.rotation.y = Math.PI;
       }
 
       if (params.particleMirror) {
@@ -190,7 +190,7 @@ const vizInit = async () => {
 
       sineCounter += Math.abs(_delta * 250) * timeDelta;
 
-      CoreControls.wavePresetController(params, _delta, prevUpdateLockInterval);
+      CoreControls.wavePresetController(params, _delta, particles2);
 
       analyser.getByteFrequencyData(dataArray);
 
