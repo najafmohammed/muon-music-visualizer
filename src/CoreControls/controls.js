@@ -11,7 +11,12 @@ export const redrawGeometry = (
     prevParams.maxPoints !== params.maxPoints ||
     prevParams.colorSpectrum !== params.colorSpectrum ||
     prevParams.dreamCatcher !== params.dreamCatcher ||
-    prevParams.aperture !== params.aperture
+    prevParams.aperture !== params.aperture ||
+    prevParams.radiusMultiplier !== params.radiusMultiplier ||
+    prevParams.spacing !== params.spacing ||
+    prevParams.distortionStrength !== params.distortionStrength ||
+    prevParams.fieldDistortion !== params.fieldDistortion ||
+    prevParams.rippleDistanceScaling !== params.rippleDistanceScaling
   ) {
     const prevScales = particles.geometry.attributes.scale.array;
     particles.geometry.dispose();
@@ -43,5 +48,10 @@ export const redrawGeometry = (
     prevParams.colorSpectrum = params.colorSpectrum;
     prevParams.dreamCatcher = params.dreamCatcher;
     prevParams.aperture = params.aperture;
+    prevParams.radiusMultiplier = params.radiusMultiplier;
+    prevParams.spacing = params.spacing;
+    prevParams.distortionStrength = params.distortionStrength;
+    prevParams.fieldDistortion = params.fieldDistortion;
+    prevParams.rippleDistanceScaling = params.rippleDistanceScaling;
   }
 };
