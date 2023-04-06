@@ -135,7 +135,6 @@ export const wavePresetController = (params, _delta, particles) => {
     const rotation =
       Math.PI / ((globalParams.visualserPresetCounter + 1.1) % 3);
     particles.rotation.z = rotation;
-    console.log(rotation);
 
     globalParams.updateLock = true;
     if (!params.visualizationPreset) {

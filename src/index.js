@@ -79,7 +79,6 @@ const vizInit = async () => {
   wavesurfer = WaveSurfer.create(waveSurferParams);
   const video = document.getElementById("video-frame");
   const ambient = document.getElementById("video-frame-ambient");
-  const bgVideo = document.getElementById("bg-video");
   const pauseAnimationButton = document.getElementById("control-animation");
   const currentTime = document.getElementById("current-time");
   const duration = document.getElementById("duration");
@@ -156,7 +155,6 @@ const vizInit = async () => {
         wavesurfer.backend.media.addEventListener("seeking", (event) => {
           video.currentTime = wavesurfer.getCurrentTime();
           ambient.currentTime = wavesurfer.getCurrentTime();
-          bgVideo.currentTime = wavesurfer.getCurrentTime();
         });
         // particles2.rotation.z = Math.PI / 3;
         // particles2.rotation.y = Math.PI;
@@ -218,7 +216,7 @@ const vizInit = async () => {
       if (!pauseAnimation) animate();
     });
 
-    DomControls.initButtonControls(wavesurfer, video, ambient, bgVideo);
+    DomControls.initButtonControls(wavesurfer, video, ambient);
     animate();
 
     wavesurfer.play();
@@ -233,7 +231,7 @@ const vizInit = async () => {
       document.getElementById("stats").click();
     const files = this.files;
     DomControls.updateFileData(files);
-    DomControls.initVideo(files, video, ambient, bgVideo);
+    DomControls.initVideo(files, video, ambient);
     wavesurfer.load(URL.createObjectURL(files[0]));
     wavesurfer.on("ready", () => {
       wavesurfer.play();
