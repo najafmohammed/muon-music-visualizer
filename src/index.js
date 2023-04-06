@@ -52,6 +52,7 @@ let params = {
     distortionStrength: 0.5,
     spacing: 1,
     fieldDistortion: 1,
+    rippleDistanceScaling: 3,
     reset: () => gsapControls.reset(camera, params),
     sideView: () => gsapControls.sideView(camera),
     /* debugging */
@@ -69,6 +70,9 @@ let params = {
     radiusMultiplier: 0,
     dreamCatcher: false,
     spacing: 1,
+    distortionStrength: 0.5,
+    fieldDistortion: 1,
+    rippleDistanceScaling: 3,
   };
 const vizInit = async () => {
   DomControls.initSearchModal();
