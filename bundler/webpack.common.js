@@ -46,14 +46,7 @@ module.exports = {
       // Images
       {
         test: /\.(jpg|png|gif|svg)$/,
-        use: [
-          {
-            loader: "url-loader",
-            // options: {
-            //   outputPath: 'assets/images/',
-            // },
-          },
-        ],
+        type: "asset/resource",
       },
       // Glsl
 
@@ -62,8 +55,6 @@ module.exports = {
         exclude: /node_modules/,
         use: ["raw-loader"],
       },
-      // test: /\.glsl$/,
-      // use: [{ loader: "webpack-glsl" }],
 
       // Fonts
       {
@@ -71,9 +62,6 @@ module.exports = {
         use: [
           {
             loader: "file-loader",
-            options: {
-              outputPath: "assets/fonts/",
-            },
           },
         ],
       },
