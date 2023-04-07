@@ -21,48 +21,66 @@ export const volumeButtonControl = (wavesurfer) => {
   const volume = document.getElementById("volume");
 
   let _tempValue = 0;
-  volumeButton.addEventListener("click", () => {
-    isNotMuted = !isNotMuted;
-    isNotMuted && (_tempValue = volumeText.innerHTML);
-    volumeButton.src = !isNotMuted ? volumeIcon : mute;
-    const newValue = !isNotMuted ? _tempValue : 0;
-    volumeText.innerHTML = newValue;
-    volume.value = newValue;
+  volumeButton.addEventListener(
+    "click",
+    () => {
+      isNotMuted = !isNotMuted;
+      isNotMuted && (_tempValue = volumeText.innerHTML);
+      volumeButton.src = !isNotMuted ? volumeIcon : mute;
+      const newValue = !isNotMuted ? _tempValue : 0;
+      volumeText.innerHTML = newValue;
+      volume.value = newValue;
 
-    wavesurfer.toggleMute();
-  });
+      wavesurfer.toggleMute();
+    },
+    { passive: true }
+  );
 };
 
 export const playAudioButtonControl = (wavesurfer, video, ambient) =>
-  playAudioButton.addEventListener("click", () => {
-    isPaused = !isPaused;
-    isPaused ? wavesurfer.play() : wavesurfer.pause();
-    isPaused ? video.play() : video.pause();
-    isPaused ? ambient.play() : ambient.pause();
-  });
+  playAudioButton.addEventListener(
+    "click",
+    () => {
+      isPaused = !isPaused;
+      isPaused ? wavesurfer.play() : wavesurfer.pause();
+      isPaused ? video.play() : video.pause();
+      isPaused ? ambient.play() : ambient.pause();
+    },
+    { passive: true }
+  );
 
 const toggleFullscreenButtonConttrol = () =>
-  toggleFullscreenButton.addEventListener("click", () => {
-    toggleFullScreen();
-    immersiveVisibility ? GUIControls.gui.close() : GUIControls.gui.open();
-    immersiveVisibility && (immersiveVisibility = !immersiveVisibility);
-  });
+  toggleFullscreenButton.addEventListener(
+    "click",
+    () => {
+      toggleFullScreen();
+      immersiveVisibility ? GUIControls.gui.close() : GUIControls.gui.open();
+      immersiveVisibility && (immersiveVisibility = !immersiveVisibility);
+    },
+    { passive: true }
+  );
 const statisticsButtonControl = () =>
-  statisticsButton.addEventListener("click", () => {
-    buttonVariables.statsVisibility = !buttonVariables.statsVisibility;
-    buttonVariables.statsVisibility
-      ? (document.getElementById("stats-display").style.visibility = "visible")
-      : (document.getElementById("stats-display").style.visibility = "hidden");
-    buttonVariables.statsVisibility
-      ? (document.getElementById("stats-display").style.opacity = "1")
-      : (document.getElementById("stats-display").style.opacity = "0");
-    buttonVariables.statsVisibility
-      ? (document.getElementById("credits").style.visibility = "hidden")
-      : (document.getElementById("credits").style.visibility = "visible");
-    buttonVariables.statsVisibility
-      ? (document.getElementById("credits").style.opacity = "0")
-      : (document.getElementById("credits").style.opacity = "1");
-  });
+  statisticsButton.addEventListener(
+    "click",
+    () => {
+      buttonVariables.statsVisibility = !buttonVariables.statsVisibility;
+      buttonVariables.statsVisibility
+        ? (document.getElementById("stats-display").style.visibility =
+            "visible")
+        : (document.getElementById("stats-display").style.visibility =
+            "hidden");
+      buttonVariables.statsVisibility
+        ? (document.getElementById("stats-display").style.opacity = "1")
+        : (document.getElementById("stats-display").style.opacity = "0");
+      buttonVariables.statsVisibility
+        ? (document.getElementById("credits").style.visibility = "hidden")
+        : (document.getElementById("credits").style.visibility = "visible");
+      buttonVariables.statsVisibility
+        ? (document.getElementById("credits").style.opacity = "0")
+        : (document.getElementById("credits").style.opacity = "1");
+    },
+    { passive: true }
+  );
 
 export const initButtonControls = (wavesurfer, video, ambient) => {
   playAudioButtonControl(wavesurfer, video, ambient);

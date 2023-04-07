@@ -156,10 +156,14 @@ const vizInit = async () => {
         currentTime.innerHTML = Operations.formatTime(
           wavesurfer.getCurrentTime()
         );
-        wavesurfer.backend.media.addEventListener("seeking", (event) => {
-          video.currentTime = wavesurfer.getCurrentTime();
-          ambient.currentTime = wavesurfer.getCurrentTime();
-        });
+        wavesurfer.backend.media.addEventListener(
+          "seeking",
+          (event) => {
+            video.currentTime = wavesurfer.getCurrentTime();
+            ambient.currentTime = wavesurfer.getCurrentTime();
+          },
+          { passive: true }
+        );
         // particles2.rotation.z = Math.PI / 3;
         // particles2.rotation.y = Math.PI;
       }
@@ -215,10 +219,14 @@ const vizInit = async () => {
       requestAnimationFrame(animate);
       render();
     };
-    pauseAnimationButton.addEventListener("click", () => {
-      pauseAnimation = !pauseAnimation;
-      if (!pauseAnimation) animate();
-    });
+    pauseAnimationButton.addEventListener(
+      "click",
+      () => {
+        pauseAnimation = !pauseAnimation;
+        if (!pauseAnimation) animate();
+      },
+      { passive: true }
+    );
 
     DomControls.initButtonControls(wavesurfer, video, ambient);
     animate();
@@ -236,7 +244,7 @@ const vizInit = async () => {
     const files = this.files;
     DomControls.updateFileData(files);
     DomControls.initVideo(files, video, ambient);
-    wavesurfer.load(URL.createObjectURL(files[0]));
+    files[0] && wavesurfer.load(URL.createObjectURL(files[0]));
     wavesurfer.on("ready", () => {
       wavesurfer.play();
       playButton.dataset.state === "false" && playButton.click();
