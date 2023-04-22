@@ -1,5 +1,6 @@
 let currentScale = 2;
 let lockScale = false;
+let maxSize;
 
 const videoContainer = document.getElementById("album-art-container");
 

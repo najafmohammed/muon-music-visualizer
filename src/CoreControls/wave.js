@@ -29,25 +29,22 @@ export const Uniforms = {
     value: 0.5,
   },
   beatScaler: {
-    value: 1,
+    value: 1.0,
   },
   maxPoints: {
     value: 720,
   },
   radiusMultiplier: {
-    value: 1,
+    value: 1.0,
   },
   spacing: {
-    value: 1,
+    value: 1.0,
   },
   fieldDistortion: {
-    value: 1,
+    value: 1.0,
   },
   delta: {
-    value: 0,
-  },
-  rippleDistanceScaling: {
-    value: 0,
+    value: 0.0,
   },
 };
 export const sineWavePropagation = (
@@ -75,7 +72,6 @@ export const sineWavePropagation = (
   Uniforms.radiusMultiplier.value = params.radiusMultiplier;
   Uniforms.spacing.value = params.spacing;
   Uniforms.fieldDistortion.value = params.fieldDistortion;
-  Uniforms.rippleDistanceScaling.value = params.rippleDistanceScaling;
 
   const u_freqData = new Float32Array(params.maxPoints);
   let point = 0;
@@ -153,6 +149,7 @@ export const wavePresetController = (params, _delta, particles) => {
           : vizPreset
         : params.radiusMultiplier,
     });
+
     if (params.visualizationPreset) {
       globalParams.visualserPresetCounter++;
 

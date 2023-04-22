@@ -14,8 +14,7 @@ export const redrawGeometry = (
     prevParams.aperture !== params.aperture ||
     prevParams.spacing !== params.spacing ||
     prevParams.distortionStrength !== params.distortionStrength ||
-    prevParams.fieldDistortion !== params.fieldDistortion ||
-    prevParams.rippleDistanceScaling !== params.rippleDistanceScaling
+    prevParams.fieldDistortion !== params.fieldDistortion
   ) {
     const prevScales = particles.geometry.attributes.scale.array;
     particles.geometry.dispose();
@@ -50,6 +49,5 @@ export const redrawGeometry = (
     prevParams.spacing = params.spacing;
     prevParams.distortionStrength = params.distortionStrength;
     prevParams.fieldDistortion = params.fieldDistortion;
-    prevParams.rippleDistanceScaling = params.rippleDistanceScaling;
   }
 };

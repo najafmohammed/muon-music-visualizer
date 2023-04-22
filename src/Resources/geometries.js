@@ -42,6 +42,7 @@ export const generateParticlesSpiral = (
     angleFromOrigin[ix] = Operations.angleFromOrigin(x, y);
     distFromOrigin[ix] = Operations.distanceFromOrigin(x, y);
     color.setHSL(Math.abs(0.1 * (ix / points) * colorSpectrum), 0.5, 0.5);
+
     color.toArray(colors, ix * 3);
   }
 
@@ -50,6 +51,7 @@ export const generateParticlesSpiral = (
     "customColor",
     new THREE.Float32BufferAttribute(colors, 3)
   );
+
   geometry.setAttribute(
     "angleFromOrigin",
     new THREE.BufferAttribute(angleFromOrigin, 1)
