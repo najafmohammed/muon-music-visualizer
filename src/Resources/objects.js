@@ -58,22 +58,26 @@ export const Objects = {
     return composer;
   },
   initResize: (camera, renderer, composer) => {
-    window.addEventListener("resize", () => {
-      // // Update sizes
-      const sizes = {
-        width: window.innerWidth,
-        height: window.innerHeight,
-      };
-      // Update camera
-      camera.aspect = sizes.width / sizes.height;
-      camera.updateProjectionMatrix();
-      // Update renderer
-      renderer.setSize(sizes.width, sizes.height);
-      composer.setSize(sizes.width, sizes.height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    window.addEventListener(
+      "resize",
+      () => {
+        // // Update sizes
+        const sizes = {
+          width: window.innerWidth,
+          height: window.innerHeight,
+        };
+        // Update camera
+        camera.aspect = sizes.width / sizes.height;
+        camera.updateProjectionMatrix();
+        // Update renderer
+        renderer.setSize(sizes.width, sizes.height);
+        composer.setSize(sizes.width, sizes.height);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-      Uniforms.resolution.value.x = renderer.domElement.width;
-      Uniforms.resolution.value.y = renderer.domElement.height;
-    });
+        Uniforms.resolution.value.x = renderer.domElement.width;
+        Uniforms.resolution.value.y = renderer.domElement.height;
+      },
+      { passive: true }
+    );
   },
 };
