@@ -20,6 +20,9 @@ varying vec3 vColor;
 varying float x;
 varying float y;
 varying float z;
+varying float vz;
+varying float vx;
+varying float vy;
 varying float v_distanceFromOrigin;
 varying float _time;
 
@@ -31,34 +34,41 @@ float additiveWaveComponent(float sign) {
 
     return waveAngle * (radii + fieldDistortion * waveRadius + u_freqData * 0.01) * spacing;
 }
-
+// float modulus(float a, float b) {
+//     return a - b * floor(a / b);
+// }
 void main() {
 
     _time = time;
     if(isPlaying)
-        _time += abs(delta * 50.0);
+        _time += (delta * 5.0);
     v_distanceFromOrigin = distanceFromOrigin;
     vScale = scale;
     vColor = customColor;
     x = position.x;
     y = position.y;
-    float sineWaveConstant = beatScaler * 4.14 * distanceFromOrigin * .1;
-    float ripleAngle = distanceFromOrigin * .3 + (time + _time * 2.0) * .15;
-    float ripple = cos(ripleAngle) * sin(ripleAngle) * (1.0 + delta);
+    float sineWaveConstant = beatScaler * 3.14 * (distanceFromOrigin * .1);
+    float ripleAngle = distanceFromOrigin * .3 + (_time) * .2;
+    float ripple = cos(ripleAngle) * sin(ripleAngle) * (1.0 + delta * 5.0);
 
     if(x == 0.0) {
         gl_PointSize = 0.0;
     }
     float cricleAngle = index * radiusMultiplier - ripple;
     float circleOffset = (beatScaler * 2.0 * (distanceFromOrigin * .1)) - 0.12;
-    float cirleRadius = (radii + (ripple)) * spacing - circleOffset;
+    float cirleRadius = (radii + (ripple)) * spacing - (circleOffset * 1.25);
+
+    // Ring config
+    // float cirleRadius = 1.0;
+
     x = sin(cricleAngle) * cirleRadius;
     y = cos(cricleAngle) * cirleRadius;
 
+    float distortion = -sin(y * dStrength) * cos(x * dStrength);
     if(isPlaying) {
-        z = 6.0 * cos(distanceFromOrigin * 0.2 + sineWaveConstant * 1.25 + delta + (u_freqData * .01) - sin(y * dStrength) * cos(x * dStrength)) - distanceFromOrigin * .17;
-        z = z - .5 + u_freqData * .043;
-        gl_PointSize = scale * z * 0.52;
+        z = 10.0 * sin(distanceFromOrigin * .2 - (time * 1.0 + beatScaler) + (sineWaveConstant + delta * 10.0) - beatScaler - distortion) - distanceFromOrigin * .17;
+        z = z - 5.5 + u_freqData * .05;
+        gl_PointSize = scale * z * 0.5;
 
         if(fieldDistortion != 1.0) {
             x = additiveWaveComponent(0.0);
@@ -66,14 +76,16 @@ void main() {
         }
 
     } else {
-        z = 3.5796 * sin(distanceFromOrigin - time - sin(y * dStrength) * cos(x * dStrength));
+        z = 3.5796 * sin(distanceFromOrigin - time - distortion);
         gl_PointSize = scale * 9.0 * z + abs(angle);
 
     }
     if(gl_PointSize > 3.5) {
         gl_PointSize = 3.5;
     }
-
+    vz = z;
+    vx = x;
+    vy = y;
     vec4 mvPosition = modelViewMatrix * vec4(x, y, z, 1.0);
     gl_Position = projectionMatrix * mvPosition;
 }
