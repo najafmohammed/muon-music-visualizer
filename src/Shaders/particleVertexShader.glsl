@@ -11,6 +11,7 @@ attribute float scale;
 attribute vec3 customColor;
 attribute float distanceFromOrigin;
 attribute float index;
+attribute float indexMod;
 attribute float angle;
 attribute float u_freqData;
 attribute float radii;
@@ -48,14 +49,12 @@ void main() {
     x = position.x;
     y = position.y;
     float sineWaveConstant = beatScaler * 3.14 * (distanceFromOrigin * .1);
+
     float ripleAngle = distanceFromOrigin * .3 + (_time) * .2;
     float ripple = cos(ripleAngle) * sin(ripleAngle) * (1.0 + delta * 5.0);
 
-    if(x == 0.0) {
-        gl_PointSize = 0.0;
-    }
     float cricleAngle = index * radiusMultiplier - ripple;
-    float circleOffset = (beatScaler * 2.0 * (distanceFromOrigin * .1)) - 0.12;
+    float circleOffset = (beatScaler * 2.5 * (distanceFromOrigin * .1)) - 0.2;
     float cirleRadius = (radii + (ripple)) * spacing - (circleOffset * 1.25);
 
     // Ring config
@@ -66,8 +65,8 @@ void main() {
 
     float distortion = -sin(y * dStrength) * cos(x * dStrength);
     if(isPlaying) {
-        z = 10.0 * sin(distanceFromOrigin * .2 - (time * 1.0 + beatScaler) + (sineWaveConstant + delta * 10.0) - beatScaler - distortion) - distanceFromOrigin * .17;
-        z = z - 5.5 + u_freqData * .05;
+        z = 10.0 * sin(distanceFromOrigin * .2 - (_time * 1.0 + beatScaler * 2.0 + delta * 10.0) + (sineWaveConstant + delta * 10.0) - beatScaler - distortion) - distanceFromOrigin * .17;
+        z = z - 5.5 + u_freqData * .05 - 20.0 * sin(indexMod);
         gl_PointSize = scale * z * 0.5;
 
         if(fieldDistortion != 1.0) {

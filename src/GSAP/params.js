@@ -58,6 +58,31 @@ export const gsapControlParams = {
     colorSpectrum: 18,
     delay: 2.3,
   },
+  cameraIntroRadiusMultiplier1: {
+    duration: 0.1,
+    radiusMultiplier: 0,
+  },
+  cameraIntroRadiusMultiplier2: {
+    duration: 2.0,
+    radiusMultiplier: 0.0035,
+  },
+  cameraIntroRadiusSpacing1: {
+    delay: 2.0,
+    duration: 1.3,
+    spacing: 3.0,
+  },
+
+  cameraIntroRadiusSpacing2: {
+    delay: 3.3,
+    duration: 0.2,
+    spacing: 1.0,
+  },
+  cameraIntroRadiusMultiplier3: {
+    delay: 2.0,
+    duration: 0.2,
+    radiusMultiplier: 0.66,
+  },
+
   paramsResetValues: [
     { param: "colorSpectrum", value: 18 },
     { param: "maxPoints", value: 5040 },
