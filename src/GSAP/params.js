@@ -44,20 +44,38 @@ export const gsapControlParams = {
     z: 100,
   },
   cameraIntroMaxPoints: {
-    duration: 0.5,
+    duration: 2.8,
     maxPoints: 720 * 7,
-    delay: 1.3,
+    delay: 1.0,
   },
   cameraIntroColorSpectrum: {
-    duration: 0.5,
+    duration: 1.0,
     colorSpectrum: 30,
-    delay: 2.0,
+    delay: 2.2,
   },
   cameraIntroColorSpectrumCorrection: {
-    duration: 0.5,
+    duration: 2.5,
     colorSpectrum: 18,
-    delay: 2.3,
+    delay: 3.0,
   },
+
+  cameraIntroRadiusSpacing1: {
+    delay: 1.0,
+    duration: 1.3,
+    spacing: 3.0,
+  },
+
+  cameraIntroRadiusSpacing2: {
+    delay: 2.3,
+    duration: 0.2,
+    spacing: 1.0,
+  },
+  cameraIntroRadiusMultiplier3: {
+    delay: 2.0,
+    duration: 0.2,
+    radiusMultiplier: 0.66,
+  },
+
   paramsResetValues: [
     { param: "colorSpectrum", value: 18 },
     { param: "maxPoints", value: 5040 },
@@ -66,5 +84,6 @@ export const gsapControlParams = {
     { param: "radiusMultiplier", value: 0.66 },
     { param: "updateLockInterval", value: 0.12 },
     { param: "deltaResponseLimit", value: 0.005 },
+    { param: "spiralMultiplier", value: 0.005 },
   ],
 };
