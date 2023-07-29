@@ -41,7 +41,8 @@ export const generateParticlesSpiral = (
     const { x, y } = { x: positions[pt], y: positions[pt + 1] };
     angleFromOrigin[ix] = Operations.angleFromOrigin(x, y);
     distFromOrigin[ix] = Operations.distanceFromOrigin(x, y);
-    color.setHSL(Math.abs(0.1 * (ix / points) * colorSpectrum), 0.5, 0.5);
+    color.setHSL(Math.abs(0.2 * (ix / points) * colorSpectrum), 0.5, 0.5);
+    // color.setHSL(0.1 , 0.4, 0.4);
 
     color.toArray(colors, ix * 3);
   }

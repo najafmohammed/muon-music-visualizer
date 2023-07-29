@@ -39,7 +39,7 @@ const maxExponentialScaler = 0.1;
 let params = {
     dreamCatcher: false,
     maxPoints: 0,
-    colorSpectrum: 0,
+    colorSpectrum: 3,
     aperture: 3,
     sineCounterMultiplier: 1,
     idleMultiplier: 0.27,
@@ -52,6 +52,7 @@ let params = {
     distortionStrength: 0.5,
     spacing: 1,
     fieldDistortion: 1,
+    spiralMultiplier: 0.005,
     reset: () => gsapControls.reset(camera, params),
     sideView: () => gsapControls.sideView(camera),
     /* debugging */
@@ -64,7 +65,7 @@ let params = {
   sineCounter = 0,
   prevParams = {
     maxPoints: 0,
-    colorSpectrum: 0,
+    colorSpectrum: 3,
     aperture: 0,
     radiusMultiplier: 0,
     dreamCatcher: false,
@@ -207,9 +208,9 @@ const vizInit = async () => {
       if (exponentialBassScaler > maxExponentialScaler)
         exponentialBassScaler = maxExponentialScaler;
 
-      const hue = CoreControls.hueControl(_delta * 50 * timeDelta);
-      particles.material.uniforms.color.value.setHSL(hue, 0.9, 0.7);
-      particles2.material.uniforms.color.value.setHSL(hue, 0.9, 0.7);
+      const hue = CoreControls.hueControl(_delta * timeDelta);
+      particles.material.uniforms.color.value.setHSL(hue, 0.5, 0.5);
+      particles2.material.uniforms.color.value.setHSL(hue, 0.5, 0.5);
     };
     const animate = () => {
       if (pauseAnimation) return;
