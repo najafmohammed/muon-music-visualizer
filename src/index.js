@@ -3,16 +3,20 @@ import Stats from "three/examples/jsm/libs/stats.module";
 import WaveSurfer from "wavesurfer.js";
 import { waveSurferParams } from "./WaveSurfer";
 import { DomControls } from "./DomControls";
-import "./IconControler";
 import { Operations } from "./Utils/operations";
 import { CoreControls } from "./CoreControls";
 import { GUIControls } from "./GUI";
-import "./style.css";
 import { Objects } from "./Resources/objects";
 import { buttonVariables } from "./DomControls/buttons";
 import { SliderVariables } from "./DomControls/sliders";
 import { gsapControls } from "./GSAP";
-
+import {
+  emittedParticleSystem,
+  emitParticle,
+  updateParticleAttributes,
+} from "./Utils/ParticleEmitter";
+import "./IconControler";
+import "./style.css";
 //global export
 export let globalParams = {
   updateStatsLock: false,
@@ -99,7 +103,6 @@ const vizInit = async () => {
     const bufferLength = analyser.frequencyBinCount;
     dataArray = new Uint8Array(bufferLength);
   };
-
   const play = () => {
     scene = new THREE.Scene();
     //initialise objects
@@ -115,6 +118,9 @@ const vizInit = async () => {
     const stats = Stats();
     document.body.appendChild(stats.dom);
     gsapControls.cameraIntro(camera, params);
+
+    //Emission particles
+    scene.add(emittedParticleSystem);
 
     Objects.initResize(camera, renderer, composer);
 
@@ -162,8 +168,6 @@ const vizInit = async () => {
           },
           { passive: true }
         );
-        // particles2.rotation.z = Math.PI / 3;
-        // particles2.rotation.y = Math.PI;
       }
 
       if (params.particleMirror) {
@@ -208,9 +212,27 @@ const vizInit = async () => {
       if (exponentialBassScaler > maxExponentialScaler)
         exponentialBassScaler = maxExponentialScaler;
 
-      const hue = CoreControls.hueControl(_delta * timeDelta);
-      particles.material.uniforms.color.value.setHSL(hue, 0.5, 0.5);
-      particles2.material.uniforms.color.value.setHSL(hue, 0.5, 0.5);
+      const hue = CoreControls.hueControl((_delta * timeDelta) / 2);
+      particles.material.uniforms.color.value.setHSL(hue, 0.7, 0.5);
+      particles2.material.uniforms.color.value.setHSL(hue, 0.7, 0.5);
+      // emittedParticleSystem.material.uniforms.color.value.setHSL(hue, 0.7, 0.5);
+
+      // if (!wavesurfer.isPlaying()) {
+      emitParticle(
+        exponentialBassScaler,
+        exponentialTrebleScaler,
+        timeDelta,
+        dataArray,
+        wavesurfer.isPlaying()
+      );
+      updateParticleAttributes(
+        exponentialBassScaler,
+        exponentialTrebleScaler,
+        timeDelta,
+        dataArray,
+        wavesurfer.isPlaying()
+      );
+      // }
     };
     const animate = () => {
       if (pauseAnimation) return;

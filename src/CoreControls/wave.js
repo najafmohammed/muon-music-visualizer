@@ -48,6 +48,20 @@ export const Uniforms = {
   },
   spiralMultiplier: { value: 1.0 },
 };
+
+export const freqData = (dataArray, maxPoints, isPlaying) => {
+  let freqData = [];
+  dataArray.forEach((data) => data > 0.1 && freqData.push(data));
+  const u_freqData = new Float32Array(maxPoints);
+  let point = 0;
+  if (isPlaying) {
+    for (let ix = 0; ix < Operations.roundTo3(maxPoints); ix++) {
+      point = Math.floor(Operations.map(ix, 0, maxPoints, 0, freqData.length));
+      u_freqData[ix] = freqData[point];
+    }
+  }
+  return u_freqData;
+};
 export const sineWavePropagation = (
   wavesurfer,
   particles,
@@ -60,10 +74,7 @@ export const sineWavePropagation = (
   prevParams
 ) => {
   const beatScaler =
-    exponentialTrebleScaler * 3.14 + exponentialBassScaler * 6 + 0.7;
-
-  let freqData = [];
-  dataArray.forEach((data) => data > 0.1 && freqData.push(data));
+    exponentialTrebleScaler * 3.14 + exponentialBassScaler * 6.24 + 1.7;
 
   Uniforms.time.value = sineCounter;
   Uniforms.isPlaying.value = wavesurfer.isPlaying();
@@ -74,17 +85,12 @@ export const sineWavePropagation = (
   Uniforms.spacing.value = params.spacing;
   Uniforms.fieldDistortion.value = params.fieldDistortion;
   Uniforms.spiralMultiplier.value = params.spiralMultiplier;
+  const u_freqData = freqData(
+    dataArray,
+    params.maxPoints,
+    wavesurfer.isPlaying()
+  );
 
-  const u_freqData = new Float32Array(params.maxPoints);
-  let point = 0;
-  if (wavesurfer.isPlaying()) {
-    for (let ix = 0; ix < Operations.roundTo3(params.maxPoints); ix++) {
-      point = Math.floor(
-        Operations.map(ix, 0, params.maxPoints, 0, freqData.length)
-      );
-      u_freqData[ix] = freqData[point];
-    }
-  }
   particles.geometry.setAttribute(
     "u_freqData",
     new THREE.BufferAttribute(u_freqData, 1)
