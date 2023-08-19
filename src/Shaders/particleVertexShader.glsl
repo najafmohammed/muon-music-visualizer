@@ -12,7 +12,6 @@ attribute float scale;
 attribute vec3 customColor;
 attribute float distanceFromOrigin;
 attribute float index;
-attribute float indexMod;
 attribute float angle;
 attribute float u_freqData;
 attribute float radii;
@@ -27,7 +26,6 @@ varying float vx;
 varying float vy;
 varying float v_distanceFromOrigin;
 varying float _time;
-varying float _scaleAccumulator;
 
 float additiveWaveComponent(float sign) {
     float prevWave = index * radiusMultiplier;
@@ -57,12 +55,12 @@ void main() {
     float ripple = cos(ripleAngle) * sin(ripleAngle) * (1.0 + delta * 10.0);
     float spiral = (index * radiusMultiplier + radii) * spiralMultiplier;
 
-    float circleOffset = (beatScaler * 1.5 * (distanceFromOrigin * .1)) + 5.0 * sin(beatScaler * delta);
+    float circleOffset = (beatScaler * 1.5 * (distanceFromOrigin * .1)) + 3.14 * sin(beatScaler * 3.14);
 
     if(!isPlaying) {
         circleOffset = (beatScaler * 1.5 * distanceFromOrigin * .1) + 3.14 * sin(time);
     }
-    float cirleRadius = radii * (spacing - .2) - .4 - circleOffset * .4 * sin(circleOffset);
+    float cirleRadius = radii * (-.4) - circleOffset * .5 * sin(circleOffset * .5);
     float cricleAngle = index * radiusMultiplier - ripple;
 
     x = sin(cricleAngle) * cirleRadius;
@@ -70,14 +68,14 @@ void main() {
     float distortion = -sin(y * dStrength) * cos(x * dStrength);
     if(isPlaying) {
 
-        float zTheta = sin(distanceFromOrigin * .1 - beatScaler * 2.0 - distortion);
-        float freqAmp = u_freqData * .04;
-        z = 10.0 * cos(-spiral) * zTheta;
+        // float zTheta = sin(distanceFromOrigin * .3 - beatScaler * .2 - distortion);
+        float freqAmp = u_freqData * .007;
+        z = 3.14 * cos(-spiral) * 1.0;
 
         z += freqAmp;
         z -= 3.5;
 
-        gl_PointSize = scale * z * 0.45;
+        gl_PointSize = (scale * z) + 1.4;
 
         if(fieldDistortion != 1.0) {
             x = additiveWaveComponent(0.0);
@@ -85,13 +83,12 @@ void main() {
         }
 
     } else {
-        z = 3.5796 * sin(spiral + distanceFromOrigin - time - distortion);
-
+        z = 2.3 * sin(spiral + distanceFromOrigin - time - distortion);
         gl_PointSize = scale * z + abs(angle);
 
     }
-    if(gl_PointSize > 3.5) {
-        gl_PointSize = 3.5;
+    if(gl_PointSize > 3.0) {
+        gl_PointSize = 3.0;
     }
     vz = z;
     vx = x;
