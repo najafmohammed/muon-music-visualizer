@@ -11,11 +11,13 @@ attribute float size;
 
 attribute vec3 colors;
 varying vec3 vColor;
+varying float vAlpha;
 void main() {
     x = position.x;
     y = position.y;
     z = position.z;
     vColor = colors;
+    vAlpha = alpha;
     gl_PointSize = size;
     if(gl_PointSize > 5.0)
         gl_PointSize = 5.0;
