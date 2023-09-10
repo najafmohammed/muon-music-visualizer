@@ -10,7 +10,6 @@ export const redrawGeometry = (
   if (
     prevParams.maxPoints !== params.maxPoints ||
     prevParams.colorSpectrum !== params.colorSpectrum ||
-    prevParams.dreamCatcher !== params.dreamCatcher ||
     prevParams.aperture !== params.aperture ||
     prevParams.spacing !== params.spacing ||
     prevParams.distortionStrength !== params.distortionStrength ||
@@ -22,7 +21,6 @@ export const redrawGeometry = (
       params.maxPoints,
       params.colorSpectrum,
       params.aperture,
-      params.dreamCatcher,
       params.radiusMultiplier,
       prevScales,
       isPlaying
@@ -34,7 +32,6 @@ export const redrawGeometry = (
         params.maxPoints,
         params.colorSpectrum,
         params.aperture,
-        params.dreamCatcher,
         params.radiusMultiplier,
         prevScales,
         isPlaying
@@ -44,7 +41,6 @@ export const redrawGeometry = (
 
     prevParams.maxPoints = params.maxPoints;
     prevParams.colorSpectrum = params.colorSpectrum;
-    prevParams.dreamCatcher = params.dreamCatcher;
     prevParams.aperture = params.aperture;
     prevParams.spacing = params.spacing;
     prevParams.distortionStrength = params.distortionStrength;
