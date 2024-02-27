@@ -44,13 +44,12 @@ let params = {
     colorSpectrum: 0,
     aperture: 3,
     sineCounterMultiplier: 1,
-    idleMultiplier: 0.2,
-    particlesRotation: true,
+    idleMultiplier: 0.27,
     particleMirror: true,
     contracted: false,
-    radiusMultipler: -0.299,
+    radiusMultiplier: 0.202,
     dynamicRadius: true,
-    updateLockInterval: 0.05,
+    updateLockInterval: 0.07,
     deltaResponseLimit: 0.005,
     visualizationPreset: true,
     reset: () => gsapControls.reset(camera, params),
@@ -64,12 +63,12 @@ let params = {
   },
   sineCounter = 0,
   prevParams = {
-    prevMaxPoints: 0,
-    prevColorSpectrum: 0,
-    prevAperture: 0,
-    prevDreamCatcher: false,
-    prevRadiusMultipler: 0.99,
-    prevContracted: false,
+    maxPoints: 0,
+    colorSpectrum: 0,
+    aperture: 0,
+    radiusMultiplier: 0,
+    dreamCatcher: false,
+    contracted: false,
   };
 const vizInit = async () => {
   DomControls.initSearchModal();
@@ -77,14 +76,12 @@ const vizInit = async () => {
   DomControls.Equalizer.eqAlignment();
   const canvas = document.querySelector("canvas.webgl");
   const file = document.getElementById("thefile");
-  const audio = document.getElementById("waveform");
   wavesurfer = WaveSurfer.create(waveSurferParams);
   const video = document.getElementById("video-frame");
   const pauseAnimationButton = document.getElementById("control-animation");
   const currentTime = document.getElementById("current-time");
   const duration = document.getElementById("duration");
   const playButton = document.getElementById("play-audio");
-  const fullScreenButton = document.getElementById("toggle-fullscreen");
   wavesurfer.on("finish", () => {
     playButton.click();
   });
@@ -122,6 +119,7 @@ const vizInit = async () => {
 
     const render = () => {
       stats.update();
+
       const timeDelta = clock.getDelta();
       const _delta = exponentialBassScaler - prevExponentialBassScalar;
       prevExponentialBassScalar = exponentialBassScaler;
@@ -146,8 +144,8 @@ const vizInit = async () => {
       composer.render();
 
       if (!wavesurfer.isPlaying()) {
-        params.radiusMultipler =
-          (params.radiusMultipler + 0.0001 * timeDelta) % 1;
+        params.radiusMultiplier =
+          (params.radiusMultiplier + 0.00012 * timeDelta) % 1;
       } else {
         duration.innerHTML = Operations.formatTime(wavesurfer.getDuration());
         currentTime.innerHTML = Operations.formatTime(
@@ -164,6 +162,7 @@ const vizInit = async () => {
       } else {
         scene.remove(particles2);
       }
+
       CoreControls.redrawGeometry(
         wavesurfer.isPlaying(),
         prevParams,
@@ -171,6 +170,7 @@ const vizInit = async () => {
         particles,
         particles2
       );
+
       CoreControls.sineWavePropagation(
         wavesurfer,
         particles,
@@ -180,7 +180,7 @@ const vizInit = async () => {
         params,
         exponentialBassScaler,
         exponentialTrebleScaler,
-        coreScaler
+        prevParams
       );
 
       sineCounter += Math.abs(_delta * 100) * timeDelta;
@@ -199,15 +199,8 @@ const vizInit = async () => {
       if (exponentialBassScaler > maxExponentialScaler)
         exponentialBassScaler = maxExponentialScaler;
 
-      const rotation =
-        exponentialBassScaler * exponentialTrebleScaler * timeDelta * 50;
-      if (params.particlesRotation) {
-        particles.rotation.z -= rotation;
-        particles2.rotation.z += rotation;
-      }
-
       if (params.RGBfy) {
-        const hue = CoreControls.hueControl(coreScaler * _delta * timeDelta);
+        const hue = CoreControls.hueControl(_delta * timeDelta);
         particles.material.uniforms.color.value.setHSL(hue, 0.9, 0.7);
         particles2.material.uniforms.color.value.setHSL(hue, 0.9, 0.7);
       }
@@ -238,7 +231,6 @@ const vizInit = async () => {
     const files = this.files;
     DomControls.updateFileData(files);
     DomControls.initVideo(files, video);
-
     wavesurfer.load(URL.createObjectURL(files[0]));
     wavesurfer.on("ready", () => {
       wavesurfer.play();
