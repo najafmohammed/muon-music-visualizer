@@ -9,7 +9,8 @@ import gsap from "gsap";
 // temp workaround to fix cors error use local file on finding fix
 // const texture = new THREE.TextureLoader().load(point);
 const texture = new THREE.TextureLoader().load(
-  "https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/sprites/circle.png"
+  // "https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/sprites/circle.png"
+  "https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/sprites/spark1.png"
 );
 export const Uniforms = {
   color: { value: new THREE.Color(0xffffff) },
