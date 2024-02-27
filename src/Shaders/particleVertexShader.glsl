@@ -40,7 +40,7 @@ void main() {
     y = position.y;
     float sineWaveConstant = beatScaler * 4.14 * distanceFromOrigin * .1 - time;
     float ripleAngle = distanceFromOrigin * .3 - time * .3 + delta;
-    float ripple = cos(ripleAngle) * sin(ripleAngle) * abs(1.0 + delta);
+    float ripple = cos(ripleAngle) * sin(ripleAngle) * (1.0 + delta);
 
     if(x == 0.0) {
         gl_PointSize = 0.0;

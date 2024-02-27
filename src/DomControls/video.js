@@ -46,18 +46,17 @@ const videoScaler = () => {
   videoContainer.addEventListener("dblclick", dblClickHandler);
 };
 
-export const initVideo = (files, video, ambient, bgVideo) => {
+export const initVideo = (files, video, ambient) => {
   const albumArt = document.getElementById("album-art-image");
   const fileExt = files[0].name.split(".").pop();
   video.src = "";
   ambient.src = "";
-  bgVideo.src = "";
   if (fileExt === "mp3" || fileExt === "flac") {
     albumArt.style.display = "block";
   } else {
     albumArt.style.display = "none";
     const source = URL.createObjectURL(files[0]);
-    [video, ambient, bgVideo].forEach((vid) => {
+    [video, ambient].forEach((vid) => {
       vid.src = source;
       vid.play();
       vid.muted = true;
