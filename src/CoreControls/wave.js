@@ -3,14 +3,18 @@ import { Operations } from "../Utils/operations";
 import { globalParams } from "..";
 import { CoreControls } from ".";
 import { GUIControls } from "../GUI";
-import point from "../../static/textures/point.png";
+import point from "../../static/images/point.png";
 import { getCurl } from "../Utils/curl";
 import gsap from "gsap";
-// begin the shader optimizations
+// temp workaround to fix cors error use local file on finding fix
+// const texture = new THREE.TextureLoader().load(point);
+const texture = new THREE.TextureLoader().load(
+  "https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/sprites/circle.png"
+);
 export const Uniforms = {
   color: { value: new THREE.Color(0xffffff) },
   pointTexture: {
-    value: new THREE.TextureLoader().load(point),
+    value: texture,
   },
   time: {
     value: 1.0,

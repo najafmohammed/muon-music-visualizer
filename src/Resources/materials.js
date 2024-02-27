@@ -10,7 +10,7 @@ export default {
     blending: THREE.AdditiveBlending,
     depthTest: false,
     transparent: true,
-    vertexColors: THREE.VertexColors,
+    vertexColors: true,
     vertexShader: glsl(particleVertexShader),
     fragmentShader: glsl(particleFragmentShader),
   }),
