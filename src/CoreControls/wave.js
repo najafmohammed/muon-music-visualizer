@@ -60,7 +60,7 @@ export const sineWavePropagation = (
   prevParams
 ) => {
   const beatScaler =
-    exponentialTrebleScaler * 3.14 + exponentialBassScaler * 6 + 0.7;
+    exponentialTrebleScaler * 3.14 + exponentialBassScaler * 6.24 + 1.7;
 
   let freqData = [];
   dataArray.forEach((data) => data > 0.1 && freqData.push(data));

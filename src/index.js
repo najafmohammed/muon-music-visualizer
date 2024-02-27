@@ -209,8 +209,8 @@ const vizInit = async () => {
         exponentialBassScaler = maxExponentialScaler;
 
       const hue = CoreControls.hueControl(_delta * timeDelta);
-      particles.material.uniforms.color.value.setHSL(hue, 0.5, 0.5);
-      particles2.material.uniforms.color.value.setHSL(hue, 0.5, 0.5);
+      particles.material.uniforms.color.value.setHSL(hue, 0.7, 0.5);
+      particles2.material.uniforms.color.value.setHSL(hue, 0.7, 0.5);
     };
     const animate = () => {
       if (pauseAnimation) return;
