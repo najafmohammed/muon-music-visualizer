@@ -5,6 +5,6 @@ export const coreBaseScaler = (distortionFr, bassFr) => {
 };
 export const hueControl = (scaler) => {
   const time = Date.now() * 0.00015;
-  const hue = ((360 * (1.0 + !scaler && time + scaler * 4)) % 360) / 360;
+  const hue = ((360 * (1.0 + !scaler && time + scaler * 10)) % 360) / 360;
   return hue;
 };

@@ -1,7 +1,5 @@
 import * as THREE from "three";
 import { Operations } from "../Utils/operations";
-export const AMOUNTX = 60,
-  AMOUNTY = 60;
 
 export const generateParticlesSpiral = (
   points,
@@ -17,6 +15,7 @@ export const generateParticlesSpiral = (
   const positions = new Float32Array(points * 3);
   const scales = new Float32Array(points);
   const index = new Float32Array(points);
+  const indexMod = new Float32Array(points);
   const colors = new Float32Array(points * 3);
   const radii = new Float32Array(points);
   const color = new THREE.Color();
@@ -28,7 +27,7 @@ export const generateParticlesSpiral = (
     dreamCatcher && (radius += 0.017);
     !dreamCatcher && (radius += Math.sin(ix + aperture));
     if (ix % 3 === 0) {
-      radius += 0.017;
+      radius += 0.016;
     }
     positions[pt] = Math.sin(ix * radiusMultiplier) * radius * spacing;
     positions[pt + 1] = Math.cos(ix * radiusMultiplier) * radius * spacing;
@@ -37,11 +36,13 @@ export const generateParticlesSpiral = (
     radii[ix] = radius;
     scales[ix] = 1;
     index[ix] = ix;
+    indexMod[ix] = ix % 360;
 
     const { x, y } = { x: positions[pt], y: positions[pt + 1] };
     angleFromOrigin[ix] = Operations.angleFromOrigin(x, y);
     distFromOrigin[ix] = Operations.distanceFromOrigin(x, y);
-    color.setHSL(Math.abs(0.1 * (ix / points) * colorSpectrum), 0.5, 0.5);
+    color.setHSL(Math.abs(0.2 * (ix / points) * colorSpectrum), 0.5, 0.5);
+    // color.setHSL(0.1 , 0.4, 0.4);
 
     color.toArray(colors, ix * 3);
   }
