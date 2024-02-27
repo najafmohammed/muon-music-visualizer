@@ -12,9 +12,32 @@ export const Unifoms = {
   pointTexture: {
     value: new THREE.TextureLoader().load(point),
   },
-  u_time: {
-    type: "f",
+  time: {
     value: 1.0,
+  },
+  resolution: {
+    value: new THREE.Vector2(),
+  },
+  isPlaying: {
+    value: false,
+  },
+  dStrength: {
+    value: 0.5,
+  },
+  beatScaler: {
+    value: 1,
+  },
+  maxPoints: {
+    value: 720,
+  },
+  radiusMultiplier: {
+    value: 1,
+  },
+  spacing: {
+    value: 1,
+  },
+  redrawGeom: {
+    value: false,
   },
 };
 export const sineWavePropagation = (
@@ -29,8 +52,21 @@ export const sineWavePropagation = (
   prevParams
 ) => {
   let redrawGeom = false;
-  const distortion = true;
-  Unifoms.u_time.value = sineCounter;
+
+  const beatScaler =
+    exponentialTrebleScaler * 3.14 + exponentialBassScaler * 6 + 0.7;
+
+  let freqData = [];
+  dataArray.forEach((data) => data > 0.1 && freqData.push(data));
+
+  Unifoms.time.value = sineCounter;
+  Unifoms.isPlaying.value = wavesurfer.isPlaying();
+  Unifoms.dStrength.value = params.distortionStrength;
+  Unifoms.beatScaler.value = beatScaler;
+  Unifoms.maxPoints.value = params.maxPoints;
+  Unifoms.radiusMultiplier.value = params.radiusMultiplier;
+  Unifoms.spacing.value = params.spacing;
+
   if (
     prevParams.radiusMultiplier !== params.radiusMultiplier ||
     prevParams.spacing !== params.spacing
@@ -38,143 +74,26 @@ export const sineWavePropagation = (
     redrawGeom = true;
     prevParams.radiusMultiplier = params.radiusMultiplier;
     prevParams.spacing = params.spacing;
+    Unifoms.redrawGeom.value = redrawGeom;
   }
-  const positions = particles.geometry.attributes.position.array;
-  const positions2 = particles2.geometry.attributes.position.array;
-  const scales = particles.geometry.attributes.scale.array;
-  const scales2 = particles2.geometry.attributes.scale.array;
-  const radiuses = particles2.geometry.attributes.radii.array;
-  const angleFromOrigin = particles.geometry.attributes.angleFromOrigin.array;
-  const distanceFromOrigin =
-    particles.geometry.attributes.distanceFromOrigin.array;
-  let i = 0,
-    j = 0,
-    point = 0;
-  let freqData = [];
-  dataArray.forEach((data) => data > 0.1 && freqData.push(data));
-  const beatScaler =
-    exponentialTrebleScaler * 3.14 + exponentialBassScaler * 6 + 0.7;
-
-  // if (wavesurfer.isPlaying() && params.fieldDistortion === 1) {
-  //   const rotation = beatScaler * 0.001;
-  //   particles.rotation.z += rotation;
-  //   particles2.rotation.z -= rotation;
-  // }
-
-  const sineWaveConstant = beatScaler * 4.14 - sineCounter;
-  for (let ix = 0; ix < Operations.roundTo3(params.maxPoints); ix++) {
-    const x = positions[i];
-    const y = positions[i + 1];
-    const z = positions[i + 2];
-    const angle = angleFromOrigin[ix];
-
-    const distFromOrigin = distanceFromOrigin[ix];
-
-    const radii = radiuses[ix];
-    if (redrawGeom) {
-      positions[i] = positions2[i] =
-        Math.sin(ix * params.radiusMultiplier) * radii * params.spacing;
-      positions[i + 1] = positions2[i + 1] =
-        Math.cos(ix * params.radiusMultiplier) * radii * params.spacing;
-      //TODO create a slider to switch between the presets
-      // new spiral
-      if (params.spiralVisualization) {
-        const rand = 0;
-        if (rand == 1) {
-          positions[i] = positions2[i] += distFromOrigin * Math.cos(angle);
-          positions[i + 1] = positions2[i + 1] += angle * Math.sin(angle);
-        } else if (rand == 2) {
-          positions[i] = positions2[i] += distFromOrigin * angle;
-          positions[i + 1] = positions2[i + 1] += angle * angle;
-        } else if (rand == 3) {
-          positions[i] = positions2[i] += distFromOrigin * Math.cos(angle);
-          positions[i + 1] = positions2[i + 1] =
-            distFromOrigin * angle * angle * Math.sin(angle) + 10;
-        } else {
-          positions[i] = positions2[i] += distFromOrigin * Math.sin(angle);
-          positions[i + 1] = positions2[i + 1] += distFromOrigin * angle;
-        }
-      }
-    }
-
-    positions[i] === 0 && (scales[j] = scales2[j] = 0);
-
-    if (wavesurfer.isPlaying()) {
+  const u_freqData = new Float32Array(params.maxPoints);
+  let point = 0;
+  if (wavesurfer.isPlaying()) {
+    for (let ix = 0; ix < Operations.roundTo3(params.maxPoints); ix++) {
       point = Math.floor(
-        Operations.map(j, 0, params.maxPoints, 0, freqData.length)
+        Operations.map(ix, 0, params.maxPoints, 0, freqData.length)
       );
-
-      let positionSinefactor =
-        7 *
-          Math.cos(
-            distFromOrigin * 0.7 +
-              sineWaveConstant -
-              (distortion &&
-                !params.spiralVisualization &&
-                Math.sin(y * params.distortionStrength) *
-                  Math.cos(x * params.distortionStrength))
-          ) -
-        distFromOrigin * 0.1;
-      freqData[point]
-        ? (positions[i + 2] = positions2[i + 2] =
-            freqData[point] * 0.047 + positionSinefactor)
-        : (positions[i + 2] = positions2[i + 2] = positionSinefactor + 0.05);
-      if (!params.spiralVisualization && params.fieldDistortion !== 1) {
-        const additiveWaveComponent = (sign) => {
-          const prevWave = ix * params.radiusMultiplier;
-          const nextWave =
-            -sineCounter * 0.1 + beatScaler * 0.1 + distFromOrigin * 0.7;
-
-          return (
-            (sign === 0 ? Math.sin(prevWave) : Math.cos(prevWave)) *
-            (radii +
-              params.fieldDistortion *
-                (sign === 0 ? Math.cos(nextWave) : Math.sin(nextWave)) +
-              freqData[point] * 0.01) *
-            params.spacing
-          );
-        };
-
-        positions[i] = positions2[i] = additiveWaveComponent(0);
-
-        positions[i + 1] = positions2[i + 1] = additiveWaveComponent(1);
-      }
-      scales[j] = scales2[j] = positions2[i + 2] * 0.17;
-
-      // scales[j] = scales2[j] = positions2[i + 2] * 0.17 ;
-
-      //special viz 2
-      // positions[i + 2] = positions2[i + 2] += Math.abs(1 - distFromOrigin) * 10;
-      // particles.rotation.z = particles2.rotation.z -= Math.PI * 0.000002;
-      // scales[j] = scales2[j] += distFromOrigin * 0.1;
-      // particles.rotation.z -=
-      //   (exponentialTrebleScaler + exponentialBassScaler) * 0.0001;
-      // particles2.rotation.z -=
-      //   (exponentialTrebleScaler + exponentialBassScaler) * 0.0001;
-    } else {
-      positions[i + 2] = positions2[i + 2] =
-        3.14 *
-        1.14 *
-        Math.sin(
-          distFromOrigin -
-            sineCounter -
-            (distortion &&
-              Math.sin(y * params.distortionStrength) *
-                Math.cos(x * params.distortionStrength))
-        );
-      scales[j] = scales2[j] = positions[i + 2] * Math.abs(angle);
-      if (scales[j] > 2.5) {
-        scales[j] = scales2[j] = 2.5;
-      }
+      u_freqData[ix] = freqData[point];
     }
-
-    if (positions[i + 2] < 1) {
-      scales[j] = scales2[j] = 0.141;
-    }
-
-    i += 3;
-    j++;
   }
+  particles.geometry.setAttribute(
+    "u_freqData",
+    new THREE.BufferAttribute(u_freqData, 1)
+  );
+  particles2.geometry.setAttribute(
+    "u_freqData",
+    new THREE.BufferAttribute(u_freqData, 1)
+  );
 
   particles.geometry.attributes.position.needsUpdate = true;
   particles.geometry.attributes.scale.needsUpdate = true;
@@ -211,7 +130,7 @@ export const wavePresetController = (params, _delta) => {
       params.radiusMultiplier += _delta;
       params.radiusMultiplier = (params.radiusMultiplier % 1) + 0.001;
     }
-    if (params.spiralVisualization || params.fieldDistortion) {
+    if (params.fieldDistortion) {
       if (
         params.visualizationPreset > CoreControls.newSpiral.length ||
         params.visualizationPreset > CoreControls.fieldDistortion.length
@@ -229,9 +148,7 @@ export const wavePresetController = (params, _delta) => {
       duration: params.updateLockInterval,
       ease: "power4.out",
       radiusMultiplier: params.visualizationPreset
-        ? params.spiralVisualization
-          ? newSpiral
-          : fieldDistortionActive
+        ? fieldDistortionActive
           ? fieldDistortion
           : vizPreset
         : params.radiusMultiplier,
@@ -241,9 +158,7 @@ export const wavePresetController = (params, _delta) => {
 
       globalParams.visualserPresetCounter =
         globalParams.visualserPresetCounter %
-        (params.spiralVisualization
-          ? CoreControls.newSpiral.length
-          : fieldDistortionActive
+        (fieldDistortionActive
           ? CoreControls.fieldDistortion.length
           : CoreControls.visualizationPresets.length);
     }

@@ -84,15 +84,6 @@ const gui = new GUI(),
       controlFolder.add(params, control)
     );
 
-    controlFolder
-      .add(params, "spiralVisualization")
-      .listen()
-      .onChange((value) => {
-        params.reset();
-        params.colorSpectrum = value ? 15 : 18;
-        params.updateLockInterval = value ? 0.17 : 0.07;
-      });
-
     particleControlsFolder
       .add(params, "fieldDistortion")
       .min(1)
