@@ -8,11 +8,11 @@ export const redrawGeometry = (
 ) => {
   const rotation = -Math.PI / 2;
   if (
-    prevParams.prevMaxPoints !== params.maxPoints ||
-    prevParams.prevColorSpectrum !== params.colorSpectrum ||
-    prevParams.prevDreamCatcher !== params.dreamCatcher ||
-    prevParams.prevAperture !== params.aperture ||
-    prevParams.prevContracted !== params.contracted
+    prevParams.maxPoints !== params.maxPoints ||
+    prevParams.colorSpectrum !== params.colorSpectrum ||
+    prevParams.dreamCatcher !== params.dreamCatcher ||
+    prevParams.aperture !== params.aperture ||
+    prevParams.contracted !== params.contracted
   ) {
     const prevScales = particles.geometry.attributes.scale.array;
     particles.geometry.dispose();
@@ -42,10 +42,10 @@ export const redrawGeometry = (
       particles2.rotation.z = rotation;
     }
 
-    prevParams.prevMaxPoints = params.maxPoints;
-    prevParams.prevColorSpectrum = params.colorSpectrum;
-    prevParams.prevDreamCatcher = params.dreamCatcher;
-    prevParams.prevAperture = params.aperture;
-    prevParams.prevContracted = params.contracted;
+    prevParams.maxPoints = params.maxPoints;
+    prevParams.colorSpectrum = params.colorSpectrum;
+    prevParams.sreamCatcher = params.dreamCatcher;
+    prevParams.aperture = params.aperture;
+    prevParams.contracted = params.contracted;
   }
 };
