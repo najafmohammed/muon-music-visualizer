@@ -55,7 +55,16 @@ export const sineWavePropagation = (
     point = 0;
   let freqData = [];
   dataArray.forEach((data) => data > 0.1 && freqData.push(data));
+  const beatScaler =
+    exponentialTrebleScaler * 3.14 + exponentialBassScaler * 6 + 0.7;
 
+  // if (wavesurfer.isPlaying() && params.fieldDistortion === 1) {
+  //   const rotation = beatScaler * 0.001;
+  //   particles.rotation.z += rotation;
+  //   particles2.rotation.z -= rotation;
+  // }
+
+  const sineWaveConstant = beatScaler * 4.14 - sineCounter;
   for (let ix = 0; ix < Operations.roundTo3(params.maxPoints); ix++) {
     const x = positions[i];
     const y = positions[i + 1];
@@ -82,7 +91,6 @@ export const sineWavePropagation = (
           positions[i + 1] = positions2[i + 1] += angle * angle;
         } else if (rand == 3) {
           positions[i] = positions2[i] += distFromOrigin * Math.cos(angle);
-
           positions[i + 1] = positions2[i + 1] =
             distFromOrigin * angle * angle * Math.sin(angle) + 10;
         } else {
@@ -99,19 +107,17 @@ export const sineWavePropagation = (
         Operations.map(j, 0, params.maxPoints, 0, freqData.length)
       );
 
-      const beatScaler =
-        exponentialTrebleScaler * 3.14 + exponentialBassScaler * 6 + 0.7;
       let positionSinefactor =
         7 *
-        Math.cos(
-          distFromOrigin * 0.7 -
-            beatScaler * 4.14 -
-            sineCounter * 1.741 -
-            (distortion &&
-              !params.spiralVisualization &&
-              Math.sin(y * params.distortionStrength) *
-                Math.cos(x * params.distortionStrength))
-        );
+          Math.cos(
+            distFromOrigin * 0.7 +
+              sineWaveConstant -
+              (distortion &&
+                !params.spiralVisualization &&
+                Math.sin(y * params.distortionStrength) *
+                  Math.cos(x * params.distortionStrength))
+          ) -
+        distFromOrigin * 0.1;
       freqData[point]
         ? (positions[i + 2] = positions2[i + 2] =
             freqData[point] * 0.047 + positionSinefactor)
@@ -121,7 +127,7 @@ export const sineWavePropagation = (
         const additiveWaveComponent = (sign) => {
           const prevWave = ix * params.radiusMultiplier;
           const nextWave =
-            sineCounter * 0.1 + beatScaler * 0.01 + distFromOrigin * 0.7;
+            -sineCounter * 0.1 + beatScaler * 0.1 + distFromOrigin * 0.7;
 
           return (
             (sign === 0 ? Math.sin(prevWave) : Math.cos(prevWave)) *
@@ -132,15 +138,13 @@ export const sineWavePropagation = (
             params.spacing
           );
         };
+
         positions[i] = positions2[i] = additiveWaveComponent(0);
 
         positions[i + 1] = positions2[i + 1] = additiveWaveComponent(1);
       }
 
       scales[j] = scales2[j] = positions2[i + 2] * 0.17;
-
-      // positions[i] = positions2[i] = positions2[i];
-      // positions[i + 1] = positions2[i + 1] = positions2[i + 1];
 
       //special viz 2
       // positions[i + 2] = positions2[i + 2] += Math.abs(1 - distFromOrigin) * 10;

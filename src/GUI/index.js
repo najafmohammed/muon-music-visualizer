@@ -1,5 +1,4 @@
 import { GUI } from "dat.gui";
-import { redrawGeometry } from "../CoreControls/controls";
 
 const gui = new GUI(),
   controlFolder = gui.addFolder("Controls"),
