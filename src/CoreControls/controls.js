@@ -12,7 +12,6 @@ export const redrawGeometry = (
     prevParams.colorSpectrum !== params.colorSpectrum ||
     prevParams.dreamCatcher !== params.dreamCatcher ||
     prevParams.aperture !== params.aperture ||
-    prevParams.radiusMultiplier !== params.radiusMultiplier ||
     prevParams.spacing !== params.spacing ||
     prevParams.distortionStrength !== params.distortionStrength ||
     prevParams.fieldDistortion !== params.fieldDistortion ||
@@ -48,7 +47,6 @@ export const redrawGeometry = (
     prevParams.colorSpectrum = params.colorSpectrum;
     prevParams.dreamCatcher = params.dreamCatcher;
     prevParams.aperture = params.aperture;
-    prevParams.radiusMultiplier = params.radiusMultiplier;
     prevParams.spacing = params.spacing;
     prevParams.distortionStrength = params.distortionStrength;
     prevParams.fieldDistortion = params.fieldDistortion;

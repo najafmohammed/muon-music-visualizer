@@ -4,12 +4,16 @@ import { toggleParams } from "./params";
 const setToggle = (element, state, img1, img2) => {
   element.src = img1;
   element.setAttribute("data-state", state);
-  element.addEventListener("click", (e) => {
-    blink(element);
-    state = !state;
-    element.setAttribute("data-state", state);
-    element.src = state ? img1 : img2;
-  });
+  element.addEventListener(
+    "click",
+    (e) => {
+      blink(element);
+      state = !state;
+      element.setAttribute("data-state", state);
+      element.src = state ? img1 : img2;
+    },
+    { passive: true }
+  );
 };
 
 toggleParams.forEach((icons) => {
