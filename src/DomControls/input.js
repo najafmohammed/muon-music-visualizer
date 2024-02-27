@@ -81,19 +81,22 @@ const searchResultElement = (
     "search-result-play-container"
   );
 
-  searchResultPlayLoader.addEventListener("click", (e) => {
-    e.preventDefault();
-    const audio = document.getElementById(`search-result-preview${index}`);
-    if (audio.paused || !audio.currentTime) {
-      params.currentPlaying && params.currentPlaying.pause();
-      searchResultPreview.style.visibility = "visible";
-      searchResultPlayLoader.style.display = "none";
-      params.currentPlaying = audio;
-      const url = e.target.dataset.songUrl;
-      audio.src = url;
-      audio.play();
-    }
-  });
+  searchResultPlayLoader.addEventListener(
+    "click",
+    (e) => {
+      const audio = document.getElementById(`search-result-preview${index}`);
+      if (audio.paused || !audio.currentTime) {
+        params.currentPlaying && params.currentPlaying.pause();
+        searchResultPreview.style.visibility = "visible";
+        searchResultPlayLoader.style.display = "none";
+        params.currentPlaying = audio;
+        const url = e.target.dataset.songUrl;
+        audio.src = url;
+        audio.play();
+      }
+    },
+    { passive: true }
+  );
 
   const searchResultPreview = document.createElement("audio");
   searchResultPreview.setAttribute("id", `search-result-preview${index}`);
@@ -125,21 +128,24 @@ export const initSearch = () => {
       searchResultContainer.innerHTML += `<div class="search-result-error">no data found <div>`;
       return;
     }
-    mock.songs.forEach((e, index) => {
-      searchResultContainer.appendChild(
-        searchResultElement(
-          e.name,
-          e.artists,
-          e.genre,
-          e.url,
-          e.imageUrl,
-          e.songUrl,
-          e.tags,
-          index,
-          params
-        )
-      );
-    });
+    mock.songs.forEach(
+      (e, index) => {
+        searchResultContainer.appendChild(
+          searchResultElement(
+            e.name,
+            e.artists,
+            e.genre,
+            e.url,
+            e.imageUrl,
+            e.songUrl,
+            e.tags,
+            index,
+            params
+          )
+        );
+      },
+      { passive: true }
+    );
 
     window.onclick = function (event) {
       var modal = document.getElementById("searchModal");

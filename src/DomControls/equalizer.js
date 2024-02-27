@@ -33,16 +33,18 @@ const updateEqualizer = (dataArray, statsVisibility, isPlaying, eqBarCount) => {
 };
 const eqAlignment = () =>
   ["top", "center", "bottom"].forEach((alignment) => {
-    document
-      .getElementById(`equalizer-${alignment}-align`)
-      .addEventListener("click", () => {
+    document.getElementById(`equalizer-${alignment}-align`).addEventListener(
+      "click",
+      () => {
         document.getElementById("equalizer").style.alignItems =
           alignment === "top"
             ? "flex-start"
             : alignment === "center"
             ? "center"
             : "flex-end";
-      });
+      },
+      { passive: true }
+    );
   });
 
 export const Equalizer = {
