@@ -46,6 +46,7 @@ export const Uniforms = {
   delta: {
     value: 0.0,
   },
+  spiralMultiplier: { value: 1.0 },
 };
 export const sineWavePropagation = (
   wavesurfer,
@@ -72,6 +73,7 @@ export const sineWavePropagation = (
   Uniforms.radiusMultiplier.value = params.radiusMultiplier;
   Uniforms.spacing.value = params.spacing;
   Uniforms.fieldDistortion.value = params.fieldDistortion;
+  Uniforms.spiralMultiplier.value = params.spiralMultiplier;
 
   const u_freqData = new Float32Array(params.maxPoints);
   let point = 0;
@@ -122,9 +124,7 @@ export const wavePresetController = (params, _delta, particles) => {
     !globalParams.updateLock &&
     params.dynamicRadius
   ) {
-    const rotation =
-      Math.PI / ((globalParams.visualserPresetCounter + 1.1) % 3) + _delta;
-    particles.rotation.z = rotation;
+    particles.rotation.z = Math.PI / 2;
     globalParams.updateLock = true;
     if (!params.visualizationPreset) {
       params.radiusMultiplier += _delta;
