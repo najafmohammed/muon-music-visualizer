@@ -7,7 +7,7 @@ import point from "../../static/textures/point.png";
 import { getCurl } from "../Utils/curl";
 import gsap from "gsap";
 // begin the shader optimizations
-export const Unifoms = {
+export const Uniforms = {
   color: { value: new THREE.Color(0xffffff) },
   pointTexture: {
     value: new THREE.TextureLoader().load(point),
@@ -39,6 +39,12 @@ export const Unifoms = {
   redrawGeom: {
     value: false,
   },
+  fieldDistortion: {
+    value: 1,
+  },
+  delta: {
+    value: 0,
+  },
 };
 export const sineWavePropagation = (
   wavesurfer,
@@ -59,13 +65,14 @@ export const sineWavePropagation = (
   let freqData = [];
   dataArray.forEach((data) => data > 0.1 && freqData.push(data));
 
-  Unifoms.time.value = sineCounter;
-  Unifoms.isPlaying.value = wavesurfer.isPlaying();
-  Unifoms.dStrength.value = params.distortionStrength;
-  Unifoms.beatScaler.value = beatScaler;
-  Unifoms.maxPoints.value = params.maxPoints;
-  Unifoms.radiusMultiplier.value = params.radiusMultiplier;
-  Unifoms.spacing.value = params.spacing;
+  Uniforms.time.value = sineCounter;
+  Uniforms.isPlaying.value = wavesurfer.isPlaying();
+  Uniforms.dStrength.value = params.distortionStrength;
+  Uniforms.beatScaler.value = beatScaler;
+  Uniforms.maxPoints.value = params.maxPoints;
+  Uniforms.radiusMultiplier.value = params.radiusMultiplier;
+  Uniforms.spacing.value = params.spacing;
+  Uniforms.fieldDistortion.value = params.fieldDistortion;
 
   if (
     prevParams.radiusMultiplier !== params.radiusMultiplier ||
@@ -74,7 +81,7 @@ export const sineWavePropagation = (
     redrawGeom = true;
     prevParams.radiusMultiplier = params.radiusMultiplier;
     prevParams.spacing = params.spacing;
-    Unifoms.redrawGeom.value = redrawGeom;
+    Uniforms.redrawGeom.value = redrawGeom;
   }
   const u_freqData = new Float32Array(params.maxPoints);
   let point = 0;
@@ -100,12 +107,12 @@ export const sineWavePropagation = (
   particles2.geometry.attributes.position.needsUpdate = true;
   particles2.geometry.attributes.scale.needsUpdate = true;
 };
-export const wavePresetController = (params, _delta) => {
+export const wavePresetController = (params, _delta, particles) => {
+  Uniforms.delta.value = _delta;
   let data = sessionStorage.getItem("initUpdateLockInterval");
   let updateLockTimeout = setTimeout(() => {
     globalParams.updateLock = !globalParams.updateLock;
   }, params.updateLockInterval * 100);
-
   data === "false" &&
     GUIControls.controlFolder
       .add(params, "updateLockInterval")
@@ -117,29 +124,29 @@ export const wavePresetController = (params, _delta) => {
         clearTimeout(updateLockTimeout);
         globalParams.updateLock && updateLockTimeout;
       });
+
   if (data === "false")
     sessionStorage.setItem("initUpdateLockInterval", "true");
-
   if (
     Math.abs(_delta) > params.deltaResponseLimit &&
     !globalParams.updateLock &&
     params.dynamicRadius
   ) {
+    const rotation =
+      Math.PI / ((globalParams.visualserPresetCounter + 1.1) % 3);
+    particles.rotation.z = rotation;
+    console.log(rotation);
+
     globalParams.updateLock = true;
     if (!params.visualizationPreset) {
       params.radiusMultiplier += _delta;
       params.radiusMultiplier = (params.radiusMultiplier % 1) + 0.001;
     }
     if (params.fieldDistortion) {
-      if (
-        params.visualizationPreset > CoreControls.newSpiral.length ||
-        params.visualizationPreset > CoreControls.fieldDistortion.length
-      )
+      if (params.visualizationPreset > CoreControls.fieldDistortion.length)
         visualizationPreset = 0;
     }
     const fieldDistortionActive = params.fieldDistortion > 3;
-    const newSpiral =
-      CoreControls.newSpiral[globalParams.visualserPresetCounter];
     const fieldDistortion =
       CoreControls.fieldDistortion[globalParams.visualserPresetCounter];
     const vizPreset =
