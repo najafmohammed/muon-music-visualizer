@@ -20,59 +20,67 @@ export const sineWavePropagation = (
   const positions2 = particles2.geometry.attributes.position.array;
   const scales = particles.geometry.attributes.scale.array;
   const scales2 = particles2.geometry.attributes.scale.array;
+  const radiuses = particles2.geometry.attributes.radii.array;
   const angleFromOrigin = particles.geometry.attributes.angleFromOrigin.array;
-
+  const distanceFromOrigin =
+    particles.geometry.attributes.distanceFromOrigin.array;
   let i = 0,
     j = 0,
     point = 0;
   let freqData = [];
   dataArray.forEach((data) => data > 0.1 && freqData.push(data));
-  if (!wavesurfer.isPlaying()) {
-    particles.rotation.z -= 0.0017;
-    particles2.rotation.z += 0.0017;
-  }
-  for (let ix = 0; ix < params.maxPoints; ix++) {
+  const distortion = true;
+  for (let ix = 0; ix < Operations.roundTo3(params.maxPoints); ix++) {
     const x = positions[i];
     const y = positions[i + 1];
     const z = positions[i + 2];
     const angle = angleFromOrigin[ix];
-    const distFromOrigin = Operations.distanceFromOrigin(x, y);
+    const distFromOrigin = distanceFromOrigin[ix];
 
+    const radii = radiuses[ix];
+    positions[i] = positions2[i] =
+      Math.sin(ix * params.radiusMultiplier) * radii;
+    positions[i + 1] = positions2[i + 1] =
+      Math.cos(ix * params.radiusMultiplier) * radii;
+    positions[i] === 0 && (scales[j] = scales2[j] = 0);
     if (wavesurfer.isPlaying()) {
       point = Math.floor(
         Operations.map(j, 0, params.maxPoints, 0, freqData.length)
       );
+      //to do move dist from origin as the frequencey of wave
       const beatScaler =
         exponentialTrebleScaler * 3.14 + exponentialBassScaler * 6 + 0.3;
-      scales[j] = scales2[j] += scales[j] * beatScaler;
       const positionSinefactor =
         6 *
-          Math.cos(
-            distFromOrigin * 0.7 -
-              beatScaler * 2 -
-              sineCounter * 1.414 -
-              Math.cos(y) * Math.sin(x)
-          ) -
-        beatScaler * coreScaler * 0.45;
+        Math.cos(
+          distFromOrigin * 0.7 -
+            beatScaler * 2 -
+            sineCounter * 1.414 -
+            (distortion && Math.cos(y) * Math.sin(x))
+        );
       const radiateSineWave =
         positionSinefactor > 0 ? positionSinefactor : positionSinefactor * 2.7;
 
       freqData[point]
         ? (positions[i + 2] = positions2[i + 2] =
-            freqData[point] * 0.05 + radiateSineWave + 0.1)
+            freqData[point] * 0.05 + radiateSineWave)
         : (positions[i + 2] = positions2[i + 2] = positionSinefactor + 0.05);
-
-      if (positions[i + 2] < 1) {
-        scales[j] = scales2[j] = 1;
-      }
+      scales[j] = scales2[j] = positions2[i + 2] * 0.141;
     } else {
-      scales[j] = scales2[j] = 1.2;
       positions[i + 2] = positions2[i + 2] =
-        3 * Math.sin(distFromOrigin - sineCounter) + 0.1;
+        3.14 * Math.sin(distFromOrigin - sineCounter);
+      scales[j] = scales2[j] = positions[i + 2] * Math.abs(angle);
+      if (scales[j] > 3 && params.contracted) {
+        scales[j] = scales2[j] = 3;
+      }
     }
-    if (scales[j] > 2.5 && params.contracted) {
-      scales[j] = scales2[j] = 2.5;
+    if (positions[i + 2] < 1) {
+      scales[j] = scales2[j] = 0.141;
     }
+    // if (scales[j] > 2.5 && params.contracted) {
+    //   scales[j] = scales2[j] = 2.5;
+    // }
+
     if (!params.contracted) {
       scales[j] = scales2[j] = scales[j] * 1.2;
     }
@@ -81,11 +89,10 @@ export const sineWavePropagation = (
       scales[j] = scales2[j] = 3;
     }
 
-    positions[i] === 0 && (scales[j] = scales2[j] = 0);
-
     i += 3;
     j++;
   }
+
   particles.geometry.attributes.position.needsUpdate = true;
   particles.geometry.attributes.scale.needsUpdate = true;
   particles.geometry.attributes.customColor.needsUpdate = true;
@@ -119,18 +126,15 @@ export const wavePresetController = (params, _delta) => {
   ) {
     globalParams.updateLock = true;
     if (!params.visualizationPreset) {
-      params.radiusMultipler += _delta;
-      params.radiusMultipler > -0.01 &&
-        params.radiusMultipler < 0.01 &&
-        (params.radiusMultipler = 0.011);
-      params.radiusMultipler > 1 && (params.radiusMultipler = -1);
+      params.radiusMultiplier += _delta;
+      params.radiusMultiplier = (params.radiusMultiplier % 1) + 0.001;
     }
     gsap.to(params, {
       duration: params.updateLockInterval,
       ease: "power4.out",
-      radiusMultipler: params.visualizationPreset
+      radiusMultiplier: params.visualizationPreset
         ? CoreControls.visualizationPresets[globalParams.visualserPresetCounter]
-        : params.radiusMultipler,
+        : params.radiusMultiplier,
     });
     if (params.visualizationPreset) {
       globalParams.visualserPresetCounter++;

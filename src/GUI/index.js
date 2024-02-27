@@ -6,7 +6,7 @@ const gui = new GUI(),
   audioControlsFolder = gui.addFolder("Audio Controls"),
   controlsGUI = {
     guiControls: ["reset"],
-    particlesParams: ["particlesRotation", "particleMirror"],
+    particlesParams: ["particleMirror"],
     controls: ["dynamicRadius", "dreamCatcher", "visualizationPreset"],
     customParams: [
       {
@@ -45,8 +45,8 @@ const gui = new GUI(),
         folder: audioControlsFolder,
       },
       {
-        name: "radiusMultipler",
-        min: -1,
+        name: "radiusMultiplier",
+        min: 0.01,
         max: 1,
         step: 0.001,
         folder: gui,
@@ -74,7 +74,7 @@ const gui = new GUI(),
     controlFolder
       .add(params, "contracted")
       .onFinishChange((_contracted) => {
-        params.radiusMultipler = _contracted ? 0.838 : -0.299;
+        params.radiusMultiplier = 0.202;
         params.maxPoints = _contracted ? 720 * 15 : 720 * 5;
       })
       .listen()
