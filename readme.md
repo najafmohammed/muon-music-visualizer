@@ -23,9 +23,9 @@ npm start
 npm run build
 ```
 
-![demo](https://media.giphy.com/media/RnGM4jZ8Ov7XWPYZDF/giphy.gif)
+![demo](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWU5MTFhZmVlOGRkZGZkNzdlY2ZiMmE4MWY1MjI1ZGVjYTgwMjQ1YSZjdD1n/ZXH3icbiYqzZCSWdJg/giphy.gif)
 
-Demo: https://storied-brioche-6d4e6a.netlify.app/
+Demo: https://muon-vis.netlify.app/
 
 > Run on Desktop, you don't want to see the horror on mobile.
 >
