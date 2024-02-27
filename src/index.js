@@ -105,7 +105,6 @@ const vizInit = async () => {
 
     GUIControls.initGui(params);
     particles = Objects.initParticles(params.maxPoints);
-
     scene.add(particles);
     particles2 = Objects.initParticles(params.maxPoints);
     camera = Objects.initCamera();

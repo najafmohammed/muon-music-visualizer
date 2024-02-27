@@ -26,7 +26,6 @@ export const audioProcessing = (dataArray) => {
     Math.pow(lowerMaxFr, 0.8)
   );
   coreScaler < 10 && coreScaler * 1.2;
-  coreScaler > 12.5 && (coreScaler = 12.5);
 
   const exponentialBassScaler = 1.001 * (1 + baseFr * 2) - 1.001;
   const exponentialTrebleScaler = 1.001 * (1 + trebleFr * 2) - 1.001;

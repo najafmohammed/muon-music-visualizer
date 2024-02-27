@@ -12,6 +12,11 @@ export const gsapControls = {
     gsap.to(params, gsapControlParams.cameraIntroMaxPoints);
     gsap.to(params, gsapControlParams.cameraIntroColorSpectrum);
     gsap.to(params, gsapControlParams.cameraIntroColorSpectrumCorrection);
+    gsap.to(params, gsapControlParams.cameraIntroRadiusMultiplier1);
+    gsap.to(params, gsapControlParams.cameraIntroRadiusMultiplier2);
+    gsap.to(params, gsapControlParams.cameraIntroRadiusSpacing1);
+    gsap.to(params, gsapControlParams.cameraIntroRadiusSpacing2);
+    gsap.to(params, gsapControlParams.cameraIntroRadiusMultiplier3);
   },
   reset: (camera, params) => {
     gsap.to(camera.position, gsapControlParams.cameraResetPosition);
