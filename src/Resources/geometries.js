@@ -9,9 +9,9 @@ export const generateParticlesSpiral = (
   aperture = 1,
   dreamCatcher,
   radiusMultiplier = 1,
-  contracted = false,
   prevScales,
-  isPlaying
+  isPlaying,
+  spacing = 1
 ) => {
   points = Operations.roundTo3(points);
   const positions = new Float32Array(points * 3);
@@ -22,13 +22,14 @@ export const generateParticlesSpiral = (
   const angleFromOrigin = new Float32Array(points);
   const distFromOrigin = new Float32Array(points * 3);
   let radius = 3.14;
+
   for (let ix = 0, pt = 0; ix < points; ix++, pt += 3) {
-    dreamCatcher && (radius += 0.015);
-    !dreamCatcher && !contracted && (radius += 0.007);
+    dreamCatcher && (radius += 0.017);
     !dreamCatcher && (radius += Math.sin(ix + aperture * 1.4));
-    ix % 3 === 0 && (radius += 0.02);
-    positions[pt] = Math.sin(ix * radiusMultiplier) * radius;
-    positions[pt + 1] = Math.cos(ix * radiusMultiplier) * radius;
+    ix % 3 === 0 && (radius += 0.017);
+    positions[pt] = Math.sin(ix * radiusMultiplier) * radius * spacing;
+    positions[pt + 1] = Math.cos(ix * radiusMultiplier) * radius * spacing;
+
     positions[pt + 2] = 1;
     radii[ix] = radius;
     scales[ix] = 1;
@@ -36,11 +37,7 @@ export const generateParticlesSpiral = (
     const { x, y } = { x: positions[pt], y: positions[pt + 1] };
     angleFromOrigin[ix] = Operations.angleFromOrigin(x, y);
     distFromOrigin[ix] = Operations.distanceFromOrigin(x, y);
-    color.setHSL(
-      Math.abs(0.01 + 0.1 * (ix / points) * colorSpectrum),
-      0.5,
-      0.5
-    );
+    color.setHSL(Math.abs(0.1 * (ix / points) * colorSpectrum), 0.5, 0.5);
     color.toArray(colors, ix * 3);
   }
 

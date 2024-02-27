@@ -39,19 +39,20 @@ const maxExponentialScaler = 0.1;
 
 let params = {
     dreamCatcher: false,
-    RGBfy: true,
     maxPoints: 0,
     colorSpectrum: 0,
     aperture: 3,
     sineCounterMultiplier: 1,
     idleMultiplier: 0.27,
     particleMirror: true,
-    contracted: false,
     radiusMultiplier: 0.202,
     dynamicRadius: true,
-    updateLockInterval: 0.07,
+    updateLockInterval: 0.17,
     deltaResponseLimit: 0.005,
     visualizationPreset: true,
+    spiralVisualization: false,
+    distortionStrength: 0.5,
+    spacing: 1,
     reset: () => gsapControls.reset(camera, params),
     sideView: () => gsapControls.sideView(camera),
     /* debugging */
@@ -68,7 +69,8 @@ let params = {
     aperture: 0,
     radiusMultiplier: 0,
     dreamCatcher: false,
-    contracted: false,
+    spiralVisualization: true,
+    spacing: 1,
   };
 const vizInit = async () => {
   DomControls.initSearchModal();
@@ -154,6 +156,7 @@ const vizInit = async () => {
         wavesurfer.backend.media.addEventListener("seeking", (event) => {
           video.currentTime = wavesurfer.getCurrentTime();
         });
+        // particles2.rotation.z = Math.PI / 10;
         particles2.rotation.y = Math.PI;
       }
 
@@ -199,11 +202,9 @@ const vizInit = async () => {
       if (exponentialBassScaler > maxExponentialScaler)
         exponentialBassScaler = maxExponentialScaler;
 
-      if (params.RGBfy) {
-        const hue = CoreControls.hueControl(_delta * timeDelta);
-        particles.material.uniforms.color.value.setHSL(hue, 0.9, 0.7);
-        particles2.material.uniforms.color.value.setHSL(hue, 0.9, 0.7);
-      }
+      const hue = CoreControls.hueControl(_delta * timeDelta);
+      particles.material.uniforms.color.value.setHSL(hue, 0.9, 0.7);
+      particles2.material.uniforms.color.value.setHSL(hue, 0.9, 0.7);
     };
     const animate = () => {
       if (pauseAnimation) return;
