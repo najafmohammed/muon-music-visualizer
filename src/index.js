@@ -57,14 +57,8 @@ let params = {
     fieldDistortion: 1,
     syncColors: false,
     divisions: 5,
-    lifespan: 100,
+    spiralCp: 0.3,
     spiralMultiplier: 0.005,
-    noiseScale: 0.17,
-    noiseForce: 0.1,
-    timeMult: 0.000000000000001,
-    batchDivision: 3,
-    enableMonoColor: false,
-    monoColor: { h: 350, s: 0.9, v: 0.3 },
     reset: () => gsapControls.reset(camera, params),
     sideView: () => gsapControls.sideView(camera),
     /* debugging */
@@ -137,7 +131,6 @@ const vizInit = async () => {
       stats.update();
 
       const timeDelta = clock.getDelta();
-      const time = clock.getElapsedTime();
       const _delta = exponentialBassScaler - prevExponentialBassScalar;
       prevExponentialBassScalar = exponentialBassScaler;
       const audio = CoreControls.audioProcessing(dataArray);
@@ -234,18 +227,18 @@ const vizInit = async () => {
       emitParticle(
         exponentialBassScaler,
         exponentialTrebleScaler,
-        time,
+        timeDelta,
         dataArray,
-        wavesurfer.isPlaying(),
-        params
+        wavesurfer.isPlaying()
       );
       updateParticleAttributes(
         exponentialBassScaler,
         exponentialTrebleScaler,
-        time,
+        timeDelta,
         dataArray,
         wavesurfer.isPlaying(),
-        params
+        params.spiralCp,
+        params.divisions
       );
     };
     const animate = () => {

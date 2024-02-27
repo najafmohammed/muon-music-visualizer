@@ -1,9 +1,8 @@
 import { Noise } from "./noise.js";
 // from Keith Peters' Blog
 // https://www.bit-101.com/blog/2021/07/curl-noise/
-export function getCurl(x, y, z) {
-  // console.log(x, y, z);
-  const delta = 0.01;
+export function getCurl(x, y, z, delta = 0.01) {
+  // const delta = 0.01;
   let n1 = Noise.perlin(x + delta, y, z);
   let n2 = Noise.perlin(x - delta, y, z);
   const cy = -(n1 - n2) / (delta * 2);
@@ -11,5 +10,6 @@ export function getCurl(x, y, z) {
   n1 = Noise.perlin(x, y + delta, z);
   n2 = Noise.perlin(x, y - delta, z);
   const cx = (n1 - n2) / (delta * 2);
+
   return { x: cx, y: cy };
 }
