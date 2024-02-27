@@ -53,6 +53,7 @@ let params = {
     spiralVisualization: false,
     distortionStrength: 0.5,
     spacing: 1,
+    fieldDistortion: 1,
     reset: () => gsapControls.reset(camera, params),
     sideView: () => gsapControls.sideView(camera),
     /* debugging */
@@ -156,7 +157,6 @@ const vizInit = async () => {
         wavesurfer.backend.media.addEventListener("seeking", (event) => {
           video.currentTime = wavesurfer.getCurrentTime();
         });
-        // particles2.rotation.z = Math.PI / 10;
         particles2.rotation.y = Math.PI;
       }
 
