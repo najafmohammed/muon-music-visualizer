@@ -77,14 +77,12 @@ const vizInit = async () => {
   DomControls.Equalizer.eqAlignment();
   const canvas = document.querySelector("canvas.webgl");
   const file = document.getElementById("thefile");
-  const audio = document.getElementById("waveform");
   wavesurfer = WaveSurfer.create(waveSurferParams);
   const video = document.getElementById("video-frame");
   const pauseAnimationButton = document.getElementById("control-animation");
   const currentTime = document.getElementById("current-time");
   const duration = document.getElementById("duration");
   const playButton = document.getElementById("play-audio");
-  const fullScreenButton = document.getElementById("toggle-fullscreen");
   wavesurfer.on("finish", () => {
     playButton.click();
   });
@@ -122,6 +120,7 @@ const vizInit = async () => {
 
     const render = () => {
       stats.update();
+
       const timeDelta = clock.getDelta();
       const _delta = exponentialBassScaler - prevExponentialBassScalar;
       prevExponentialBassScalar = exponentialBassScaler;
@@ -161,6 +160,7 @@ const vizInit = async () => {
 
       if (params.particleMirror) {
         scene.add(particles2);
+        particles2.visibility = false;
       } else {
         scene.remove(particles2);
       }
@@ -238,7 +238,6 @@ const vizInit = async () => {
     const files = this.files;
     DomControls.updateFileData(files);
     DomControls.initVideo(files, video);
-
     wavesurfer.load(URL.createObjectURL(files[0]));
     wavesurfer.on("ready", () => {
       wavesurfer.play();
