@@ -208,7 +208,7 @@ const vizInit = async () => {
       if (exponentialBassScaler > maxExponentialScaler)
         exponentialBassScaler = maxExponentialScaler;
 
-      const hue = CoreControls.hueControl(_delta * timeDelta);
+      const hue = CoreControls.hueControl(_delta * 50 * timeDelta);
       particles.material.uniforms.color.value.setHSL(hue, 0.9, 0.7);
       particles2.material.uniforms.color.value.setHSL(hue, 0.9, 0.7);
     };

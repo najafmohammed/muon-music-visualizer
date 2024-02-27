@@ -7,10 +7,10 @@ import point from "../../static/images/point.png";
 import { getCurl } from "../Utils/curl";
 import gsap from "gsap";
 // temp workaround to fix cors error use local file on finding fix
-// const texture = new THREE.TextureLoader().load(point);
-const texture = new THREE.TextureLoader().load(
-  "https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/sprites/circle.png"
-);
+const texture = new THREE.TextureLoader().load(point);
+// const texture = new THREE.TextureLoader().load(
+//   "https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/sprites/circle.png"
+// );
 export const Uniforms = {
   color: { value: new THREE.Color(0xffffff) },
   pointTexture: {
@@ -123,9 +123,8 @@ export const wavePresetController = (params, _delta, particles) => {
     params.dynamicRadius
   ) {
     const rotation =
-      Math.PI / ((globalParams.visualserPresetCounter + 1.1) % 3);
+      Math.PI / ((globalParams.visualserPresetCounter + 1.1) % 3) + _delta;
     particles.rotation.z = rotation;
-
     globalParams.updateLock = true;
     if (!params.visualizationPreset) {
       params.radiusMultiplier += _delta;

@@ -1,7 +1,5 @@
 import * as THREE from "three";
 import { Operations } from "../Utils/operations";
-export const AMOUNTX = 60,
-  AMOUNTY = 60;
 
 export const generateParticlesSpiral = (
   points,
