@@ -73,9 +73,9 @@ void main() {
         z = 3.14 * cos(-spiral) * 1.0;
 
         z += freqAmp;
-        z -= 3.5;
+        z -= 2.5;
 
-        gl_PointSize = (scale * z) + 1.4;
+        gl_PointSize = z * distanceFromOrigin;
 
         if(fieldDistortion != 1.0) {
             x = additiveWaveComponent(0.0);
@@ -84,7 +84,7 @@ void main() {
 
     } else {
         z = 2.3 * sin(spiral + distanceFromOrigin - time - distortion);
-        gl_PointSize = scale * z + abs(angle);
+        gl_PointSize = z * distanceFromOrigin * .08;
 
     }
     if(gl_PointSize > 3.0) {

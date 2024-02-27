@@ -14,7 +14,7 @@
     "internal-ip": "^8.0.0",
     "mini-css-extract-plugin": "^2.7.6",
     "portfinder-sync": "0.0.2",
-    "three": "^0.154.0",
+    "three": "^0.155.0",
     "wavesurfer.js": "^6.0.3"
   },
   "devDependencies": {
