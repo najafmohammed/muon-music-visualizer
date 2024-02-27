@@ -26,7 +26,7 @@ const gui = new GUI(),
       {
         name: "maxPoints",
         min: 0,
-        max: 720 * 15,
+        max: 720 * 7,
         step: 360,
         folder: particleControlsFolder,
       },

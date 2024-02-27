@@ -5,11 +5,8 @@ import { CoreControls } from ".";
 import { GUIControls } from "../GUI";
 import point from "../../static/textures/point.png";
 import { getCurl } from "../Utils/curl";
-// import lattice from "../../static/textures/lattice.jpg";
 import gsap from "gsap";
-//TODO update distortion visualization
-// add all these updates and then commit with msg of updated the visualization params
-// begin the shader optimisations
+// begin the shader optimizations
 export const Unifoms = {
   color: { value: new THREE.Color(0xffffff) },
   pointTexture: {
@@ -122,7 +119,6 @@ export const sineWavePropagation = (
         ? (positions[i + 2] = positions2[i + 2] =
             freqData[point] * 0.047 + positionSinefactor)
         : (positions[i + 2] = positions2[i + 2] = positionSinefactor + 0.05);
-
       if (!params.spiralVisualization && params.fieldDistortion !== 1) {
         const additiveWaveComponent = (sign) => {
           const prevWave = ix * params.radiusMultiplier;
@@ -143,8 +139,9 @@ export const sineWavePropagation = (
 
         positions[i + 1] = positions2[i + 1] = additiveWaveComponent(1);
       }
-
       scales[j] = scales2[j] = positions2[i + 2] * 0.17;
+
+      // scales[j] = scales2[j] = positions2[i + 2] * 0.17 ;
 
       //special viz 2
       // positions[i + 2] = positions2[i + 2] += Math.abs(1 - distFromOrigin) * 10;

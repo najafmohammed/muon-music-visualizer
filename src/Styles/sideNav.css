@@ -3,6 +3,7 @@
   height: 250px;
   left: 0;
   top: calc(50vh - 125px);
+  z-index: 2;
 }
 .side-nav-element {
   cursor: pointer;
