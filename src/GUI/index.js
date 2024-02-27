@@ -1,4 +1,5 @@
 import { GUI } from "dat.gui";
+import { redrawGeometry } from "../CoreControls/controls";
 
 const gui = new GUI(),
   controlFolder = gui.addFolder("Controls"),
@@ -9,6 +10,20 @@ const gui = new GUI(),
     particlesParams: ["particleMirror"],
     controls: ["dynamicRadius", "dreamCatcher", "visualizationPreset"],
     customParams: [
+      {
+        name: "spacing",
+        min: 0,
+        max: 1,
+        step: 0.01,
+        folder: particleControlsFolder,
+      },
+      {
+        name: "distortionStrength",
+        min: 0,
+        max: 2,
+        step: 0.01,
+        folder: particleControlsFolder,
+      },
       {
         name: "maxPoints",
         min: 0,
@@ -69,6 +84,15 @@ const gui = new GUI(),
     controlsGUI.controls.forEach((control) =>
       controlFolder.add(params, control)
     );
+
+    controlFolder
+      .add(params, "spiralVisualization")
+      .listen()
+      .onChange((value) => {
+        params.reset();
+        params.colorSpectrum = value ? 15 : 18;
+        params.updateLockInterval = value ? 0.17 : 0.07;
+      });
     controlsGUI.guiControls.forEach((control) => gui.add(params, control));
     gui.add(params, "sideView").name("side view");
   };
