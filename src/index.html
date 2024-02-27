@@ -73,16 +73,30 @@
         </div>
       </div>
     </div>
-
+    <div class="bg-video-wrapper">
+      <video disablepictureinpicture id="bg-video"></video>
+      <div class="bg-video-filter"></div>
+    </div>
     <div class="bottom-container">
       <div class="action-bar-container">
         <div class="music-control">
-          <video
-            class="album-art"
-            id="video-frame"
-            width="300px"
-            height="auto"
-          ></video>
+          <div class="album-art-container-wrapper">
+            <div class="album-art-container" id="album-art-container">
+              <video
+                disablepictureinpicture
+                class="album-art-common album-art-ambient"
+                id="video-frame-ambient"
+                width="270px"
+              ></video>
+              <video
+                disablepictureinpicture
+                class="album-art-common album-art"
+                id="video-frame"
+                width="250px"
+              ></video>
+            </div>
+          </div>
+
           <div id="album-art-image" alt="album art"></div>
           <div class="audio-control">
             <img class="play-audio icon" alt="play" id="play-audio" />
@@ -110,8 +124,6 @@
 
         <div class="action-end-container">
           <div class="stats-display" id="stats-display">
-            <div class="stats-title">Statistics</div>
-
             <div class="stats-grid-container">
               <div class="grid-element">
                 <div id="grid-bass">0</div>

@@ -21,12 +21,12 @@ const updateEqualizer = (dataArray, statsVisibility, isPlaying, eqBarCount) => {
         (i - 1) * (dataArray.length / eqBarCount) - i,
         i * (dataArray.length / eqBarCount) + i
       );
-      tempValue = _tempArray.reduce((a, b) => a + b, 0) / 50;
-      tempValue > 110 && (tempValue = 110);
+      tempValue = _tempArray.reduce((a, b) => a + b, 0) / 60;
+      tempValue > 80 && (tempValue = 80);
       const bar = document.getElementById(`bar${i - 1}`);
       bar.style.height = `${tempValue}px`;
       bar.style.width = `${tempValue / 15}px`;
-      bar.style.backgroundColor = `hsl(${tempValue * 3},50%,50%)`;
+      bar.style.backgroundColor = `hsl(${tempValue * 4},50%,50%)`;
       tempValue = 0;
     }
   }

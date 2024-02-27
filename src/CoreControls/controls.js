@@ -11,7 +11,6 @@ export const redrawGeometry = (
     prevParams.maxPoints !== params.maxPoints ||
     prevParams.colorSpectrum !== params.colorSpectrum ||
     prevParams.dreamCatcher !== params.dreamCatcher ||
-    prevParams.spiralVisualization !== params.spiralVisualization ||
     prevParams.aperture !== params.aperture
   ) {
     const prevScales = particles.geometry.attributes.scale.array;
@@ -43,7 +42,6 @@ export const redrawGeometry = (
     prevParams.maxPoints = params.maxPoints;
     prevParams.colorSpectrum = params.colorSpectrum;
     prevParams.dreamCatcher = params.dreamCatcher;
-    prevParams.spiralVisualization = params.spiralVisualization;
     prevParams.aperture = params.aperture;
   }
 };

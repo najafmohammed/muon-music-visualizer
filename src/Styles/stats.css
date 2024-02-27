@@ -12,19 +12,14 @@
   justify-content: space-between;
   padding: 5px 10px;
 }
-.stats-title {
-  padding: 5px;
-  margin: 10px 0;
-  font-size: 1.2rem;
-  text-align: center;
-}
 .stats-display {
   transition: all 0.3s ease-in-out;
   visibility: hidden;
   opacity: 0;
   color: var(--textColor);
-  width: 350px;
-  height: 260px;
+  width: 270px;
+  padding: 10px;
+  height: 200px;
   border-radius: var(--borderRadius);
   background: var(--paperColorDark);
 }

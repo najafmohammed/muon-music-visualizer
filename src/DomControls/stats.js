@@ -21,8 +21,7 @@ export const updateStats = (
   );
   globalParams.updateStatsLock = true;
   globalParams.updateStatsLock &&
-    setTimeout(
-      () => (globalParams.updateStatsLock = !globalParams.updateStatsLock),
-      50
-    );
+    setTimeout(() => {
+      globalParams.updateStatsLock = !globalParams.updateStatsLock;
+    }, 50);
 };

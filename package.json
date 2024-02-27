@@ -20,6 +20,7 @@
     "babel-loader": "^8.2.2",
     "css-loader": "^5.1.0",
     "file-loader": "^6.2.0",
+    "glslify": "^7.1.1",
     "html-loader": "^2.1.1",
     "raw-loader": "^4.0.2",
     "style-loader": "^2.0.0",

@@ -31,7 +31,6 @@ let wavesurfer,
   particles2,
   scene,
   prevExponentialBassScalar = 0,
-  prevUpdateLockInterval = 0,
   pauseAnimation = false;
 sessionStorage.setItem("initUpdateLockInterval", "false");
 
@@ -45,12 +44,11 @@ let params = {
     sineCounterMultiplier: 1,
     idleMultiplier: 0.27,
     particleMirror: true,
-    radiusMultiplier: 0.202,
+    radiusMultiplier: 0.66,
     dynamicRadius: true,
     updateLockInterval: 0.17,
     deltaResponseLimit: 0.005,
     visualizationPreset: true,
-    spiralVisualization: false,
     distortionStrength: 0.5,
     spacing: 1,
     fieldDistortion: 1,
@@ -70,7 +68,6 @@ let params = {
     aperture: 0,
     radiusMultiplier: 0,
     dreamCatcher: false,
-    spiralVisualization: true,
     spacing: 1,
   };
 const vizInit = async () => {
@@ -81,6 +78,8 @@ const vizInit = async () => {
   const file = document.getElementById("thefile");
   wavesurfer = WaveSurfer.create(waveSurferParams);
   const video = document.getElementById("video-frame");
+  const ambient = document.getElementById("video-frame-ambient");
+  const bgVideo = document.getElementById("bg-video");
   const pauseAnimationButton = document.getElementById("control-animation");
   const currentTime = document.getElementById("current-time");
   const duration = document.getElementById("duration");
@@ -132,7 +131,7 @@ const vizInit = async () => {
       exponentialTrebleScaler = audio.exponentialBassScaler;
       coreScaler > 1
         ? (sineCounter += coreScaler * 0.5 * timeDelta)
-        : (sineCounter += params.idleMultiplier * timeDelta * 15);
+        : (sineCounter += params.idleMultiplier * timeDelta * 7);
 
       wavesurfer.isPlaying &&
         buttonVariables.statsVisibility &&
@@ -156,8 +155,11 @@ const vizInit = async () => {
         );
         wavesurfer.backend.media.addEventListener("seeking", (event) => {
           video.currentTime = wavesurfer.getCurrentTime();
+          ambient.currentTime = wavesurfer.getCurrentTime();
+          bgVideo.currentTime = wavesurfer.getCurrentTime();
         });
-        particles2.rotation.y = Math.PI;
+        // particles2.rotation.z = Math.PI / 3;
+        // particles2.rotation.y = Math.PI;
       }
 
       if (params.particleMirror) {
@@ -186,9 +188,9 @@ const vizInit = async () => {
         prevParams
       );
 
-      sineCounter += Math.abs(_delta * 100) * timeDelta;
+      sineCounter += Math.abs(_delta * 250) * timeDelta;
 
-      CoreControls.wavePresetController(params, _delta, prevUpdateLockInterval);
+      CoreControls.wavePresetController(params, _delta, particles2);
 
       analyser.getByteFrequencyData(dataArray);
 
@@ -216,7 +218,7 @@ const vizInit = async () => {
       if (!pauseAnimation) animate();
     });
 
-    DomControls.initButtonControls(wavesurfer, video);
+    DomControls.initButtonControls(wavesurfer, video, ambient, bgVideo);
     animate();
 
     wavesurfer.play();
@@ -231,7 +233,7 @@ const vizInit = async () => {
       document.getElementById("stats").click();
     const files = this.files;
     DomControls.updateFileData(files);
-    DomControls.initVideo(files, video);
+    DomControls.initVideo(files, video, ambient, bgVideo);
     wavesurfer.load(URL.createObjectURL(files[0]));
     wavesurfer.on("ready", () => {
       wavesurfer.play();
