@@ -2,12 +2,13 @@ import { GUI } from "dat.gui";
 
 const gui = new GUI(),
   controlFolder = gui.addFolder("Controls"),
-  particleControlsFolder = gui.addFolder("Particle Params"),
+  particleControlsFolder = gui.addFolder("Particle Controls"),
   audioControlsFolder = gui.addFolder("Audio Controls"),
+  emissionControlsFolder = gui.addFolder("Emission Controls"),
   controlsGUI = {
     guiControls: ["reset"],
     particlesParams: ["particleMirror"],
-    controls: ["dynamicRadius", "dreamCatcher", "visualizationPreset"],
+    controls: ["dynamicRadius", "visualizationPreset"],
     customParams: [
       {
         name: "spacing",
@@ -72,6 +73,20 @@ const gui = new GUI(),
         max: 1,
         step: 0.0001,
         folder: gui,
+      },
+      {
+        name: "divisions",
+        min: 1,
+        max: 15,
+        step: 1,
+        folder: emissionControlsFolder,
+      },
+      {
+        name: "spiralCp",
+        min: 0,
+        max: 1,
+        step: 0.001,
+        folder: emissionControlsFolder,
       },
     ],
   },

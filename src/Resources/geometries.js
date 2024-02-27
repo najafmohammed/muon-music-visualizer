@@ -5,7 +5,6 @@ export const generateParticlesSpiral = (
   points = 720,
   colorSpectrum,
   aperture = 1,
-  dreamCatcher,
   radiusMultiplier = 1,
   prevScales,
   isPlaying,
@@ -23,10 +22,9 @@ export const generateParticlesSpiral = (
   let radius = 3.14;
 
   for (let ix = 0, pt = 0; ix < points; ix++, pt += 3) {
-    dreamCatcher && (radius += 0.017);
-    !dreamCatcher && (radius += Math.sin(ix + aperture));
+    radius += Math.sin(ix + aperture);
     if (ix % 3 === 0) {
-      radius += 0.012;
+      radius += 0.01;
     }
     positions[pt] = Math.sin(ix * radiusMultiplier) * radius * spacing;
     positions[pt + 1] = Math.cos(ix * radiusMultiplier) * radius * spacing;
@@ -39,8 +37,8 @@ export const generateParticlesSpiral = (
     const { x, y } = { x: positions[pt], y: positions[pt + 1] };
     angleFromOrigin[ix] = Operations.angleFromOrigin(x, y);
     distFromOrigin[ix] = Operations.distanceFromOrigin(x, y);
-    color.setHSL(Math.atan2(x, y), 0.5, 0.5);
-    // color.setHSL(Math.abs(0.1 * (ix / points) * colorSpectrum), 0.5, 0.5);
+    // color.setHSL(Math.atan2(x, y), 0.5, 0.5);
+    color.setHSL(Math.abs(0.1 * (ix / points) * colorSpectrum), 0.5, 0.5);
 
     color.toArray(colors, ix * 3);
     if (ix > 1440) radius -= 0.0015;

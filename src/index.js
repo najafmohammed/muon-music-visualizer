@@ -41,7 +41,6 @@ sessionStorage.setItem("initUpdateLockInterval", "false");
 const maxExponentialScaler = 0.1;
 
 let params = {
-    dreamCatcher: false,
     maxPoints: 0,
     colorSpectrum: 3,
     aperture: 3,
@@ -56,6 +55,9 @@ let params = {
     distortionStrength: 0.5,
     spacing: 1,
     fieldDistortion: 1,
+    syncColors: false,
+    divisions: 5,
+    spiralCp: 0.3,
     spiralMultiplier: 0.005,
     reset: () => gsapControls.reset(camera, params),
     sideView: () => gsapControls.sideView(camera),
@@ -72,7 +74,6 @@ let params = {
     colorSpectrum: 3,
     aperture: 0,
     radiusMultiplier: 0,
-    dreamCatcher: false,
     spacing: 1,
     distortionStrength: 0.5,
     fieldDistortion: 1,
@@ -215,9 +216,14 @@ const vizInit = async () => {
       const hue = CoreControls.hueControl((_delta * timeDelta) / 2);
       particles.material.uniforms.color.value.setHSL(hue, 0.7, 0.5);
       particles2.material.uniforms.color.value.setHSL(hue, 0.7, 0.5);
-      // emittedParticleSystem.material.uniforms.color.value.setHSL(hue, 0.7, 0.5);
+      if (params.syncColors) {
+        emittedParticleSystem.material.uniforms.color.value.setHSL(
+          hue,
+          0.7,
+          0.5
+        );
+      }
 
-      // if (!wavesurfer.isPlaying()) {
       emitParticle(
         exponentialBassScaler,
         exponentialTrebleScaler,
@@ -230,9 +236,10 @@ const vizInit = async () => {
         exponentialTrebleScaler,
         timeDelta,
         dataArray,
-        wavesurfer.isPlaying()
+        wavesurfer.isPlaying(),
+        params.spiralCp,
+        params.divisions
       );
-      // }
     };
     const animate = () => {
       if (pauseAnimation) return;
