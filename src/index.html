@@ -77,12 +77,23 @@
     <div class="bottom-container">
       <div class="action-bar-container">
         <div class="music-control">
-          <video
-            class="album-art"
-            id="video-frame"
-            width="300px"
-            height="auto"
-          ></video>
+          <div class="album-art-container">
+            <video
+              disablepictureinpicture
+              class="album-art-common album-art-ambient"
+              id="video-frame-ambient"
+              width="300px"
+              height="168.75px"
+            ></video>
+            <video
+              disablepictureinpicture
+              class="album-art-common album-art"
+              id="video-frame"
+              width="270px"
+              height="151.88px"
+            ></video>
+          </div>
+
           <div id="album-art-image" alt="album art"></div>
           <div class="audio-control">
             <img class="play-audio icon" alt="play" id="play-audio" />
