@@ -44,9 +44,22 @@ export const gsapControlParams = {
     z: 100,
   },
   cameraIntroMaxPoints: {
-    duration: 2.8,
-    maxPoints: 720 * 7,
-    delay: 1.0,
+    duration: 1.0,
+    maxPoints: 1440,
+    spiralMultiplier: 0,
+    delay: 0.5,
+  },
+  cameraIntroMaxPoints2: {
+    duration: 0.5,
+    maxPoints: 2880,
+    spiralMultiplier: 0.002,
+    delay: 1.5,
+  },
+  cameraIntroMaxPoints3: {
+    duration: 0.5,
+    maxPoints: 3960,
+    spiralMultiplier: 0.005,
+    delay: 2.0,
   },
   cameraIntroColorSpectrum: {
     duration: 1.0,
@@ -60,25 +73,19 @@ export const gsapControlParams = {
   },
 
   cameraIntroRadiusSpacing1: {
-    delay: 1.0,
     duration: 1.3,
-    spacing: 3.0,
+    spacing: 1.5,
   },
 
   cameraIntroRadiusSpacing2: {
-    delay: 2.3,
-    duration: 0.2,
+    delay: 1.3,
+    duration: 1.0,
     spacing: 1.0,
-  },
-  cameraIntroRadiusMultiplier3: {
-    delay: 2.0,
-    duration: 0.2,
-    radiusMultiplier: 0.66,
   },
 
   paramsResetValues: [
     { param: "colorSpectrum", value: 18 },
-    { param: "maxPoints", value: 5040 },
+    { param: "maxPoints", value: 3960 },
     { param: "apertureParticle", value: 3 },
     { param: "particleMirror", value: true },
     { param: "radiusMultiplier", value: 0.66 },

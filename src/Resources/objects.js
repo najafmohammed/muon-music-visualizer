@@ -54,7 +54,7 @@ export const Objects = {
     composer.setSize(window.innerWidth, window.innerHeight);
     composer.addPass(renderScene);
     composer.addPass(bloomPass);
-    // composer.addPass(afterImage);
+    composer.addPass(afterImage);
     return composer;
   },
   initResize: (camera, renderer, composer) => {
