@@ -11,8 +11,7 @@ export const redrawGeometry = (
     prevParams.maxPoints !== params.maxPoints ||
     prevParams.colorSpectrum !== params.colorSpectrum ||
     prevParams.dreamCatcher !== params.dreamCatcher ||
-    prevParams.aperture !== params.aperture ||
-    prevParams.contracted !== params.contracted
+    prevParams.aperture !== params.aperture
   ) {
     const prevScales = particles.geometry.attributes.scale.array;
     particles.geometry.dispose();
@@ -22,7 +21,6 @@ export const redrawGeometry = (
       params.aperture,
       params.dreamCatcher,
       params.radiusMultiplier,
-      params.contracted,
       prevScales,
       isPlaying
     );
@@ -35,7 +33,6 @@ export const redrawGeometry = (
         params.aperture,
         params.dreamCatcher,
         params.radiusMultiplier,
-        params.contracted,
         prevScales,
         isPlaying
       );
@@ -46,6 +43,5 @@ export const redrawGeometry = (
     prevParams.colorSpectrum = params.colorSpectrum;
     prevParams.sreamCatcher = params.dreamCatcher;
     prevParams.aperture = params.aperture;
-    prevParams.contracted = params.contracted;
   }
 };

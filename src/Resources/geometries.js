@@ -9,7 +9,6 @@ export const generateParticlesSpiral = (
   aperture = 1,
   dreamCatcher,
   radiusMultiplier = 1,
-  contracted = false,
   prevScales,
   isPlaying
 ) => {
@@ -24,7 +23,7 @@ export const generateParticlesSpiral = (
   let radius = 3.14;
   for (let ix = 0, pt = 0; ix < points; ix++, pt += 3) {
     dreamCatcher && (radius += 0.015);
-    !dreamCatcher && !contracted && (radius += 0.007);
+    dreamCatcher && (radius += 0.01);
     !dreamCatcher && (radius += Math.sin(ix + aperture * 1.4));
     ix % 3 === 0 && (radius += 0.02);
     positions[pt] = Math.sin(ix * radiusMultiplier) * radius;
