@@ -1,0 +1,71 @@
+export const gsapControlParams = {
+  cameraResetPosition: {
+    duration: 1,
+    x: 0,
+    y: 0,
+    z: 100,
+  },
+  cameraResetRotation: {
+    duration: 1,
+    x: 0,
+    y: 0,
+    z: 0,
+  },
+  cameraPosition1Pos: {
+    duration: 1,
+    x: 0,
+    y: -100,
+    z: 17,
+  },
+  cameraPostion1Rot: {
+    duration: 1,
+    x: 1.4024061696473666,
+    y: 0,
+    z: 0,
+  },
+  cameraIntroScale: {
+    duration: 1,
+    x: 1,
+    y: 1,
+    z: 1,
+    delay: 0.5,
+  },
+  cameraIntroRotation: {
+    duration: 1.5,
+    x: 0,
+    y: 0,
+    z: 0,
+    delay: 0.5,
+  },
+  cameraIntroPosition: {
+    duration: 1,
+    x: 0,
+    y: 0,
+    z: 100,
+  },
+  cameraIntroMaxPoints: {
+    duration: 0.5,
+    maxPoints: 720 * 7,
+    delay: 1,
+  },
+  cameraIntroColorSpectrum: {
+    duration: 0.5,
+    colorSpectrum: 20,
+    delay: 0.8,
+  },
+  cameraIntroColorSpectrumCorrection: {
+    duration: 0.5,
+    colorSpectrum: 18,
+    delay: 1.2,
+  },
+  paramsResetValues: [
+    { param: "colorSpectrum", value: 18 },
+    { param: "maxPoints", value: 7920 },
+    { param: "apertureParticle", value: 3 },
+    { param: "particleMirror", value: true },
+    { param: "radiusMultipler", value: 0.838 },
+    { param: "contracted", value: true },
+    { param: "updateLockInterval", value: 0.05 },
+    { param: "deltaResponseLimit", value: 0.005 },
+  ],
+};
