@@ -17,6 +17,13 @@ const gui = new GUI(),
         folder: particleControlsFolder,
       },
       {
+        name: "rippleDistanceScaling",
+        min: 0,
+        max: 10,
+        step: 1,
+        folder: particleControlsFolder,
+      },
+      {
         name: "distortionStrength",
         min: 0,
         max: 2,

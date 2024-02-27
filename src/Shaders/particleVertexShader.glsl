@@ -4,9 +4,9 @@ uniform float dStrength;
 uniform float beatScaler;
 uniform float radiusMultiplier;
 uniform float spacing;
-uniform bool redrawGeom;
 uniform float fieldDistortion;
 uniform float delta;
+uniform float rippleDistanceScaling;
 
 attribute float scale;
 attribute vec3 customColor;
@@ -45,12 +45,10 @@ void main() {
     if(x == 0.0) {
         gl_PointSize = 0.0;
     }
-    if(redrawGeom) {
-        float cricleAngle = index * radiusMultiplier - ripple;
-        float cirleRadius = (radii + (ripple * distanceFromOrigin * .3)) * spacing;
-        x = sin(cricleAngle) * cirleRadius;
-        y = cos(cricleAngle) * cirleRadius;
-    }
+    float cricleAngle = index * radiusMultiplier - ripple;
+    float cirleRadius = (radii + (ripple * distanceFromOrigin * .1 * rippleDistanceScaling)) * spacing;
+    x = sin(cricleAngle) * cirleRadius;
+    y = cos(cricleAngle) * cirleRadius;
 
     if(isPlaying) {
 
