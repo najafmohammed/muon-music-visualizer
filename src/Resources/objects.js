@@ -40,6 +40,7 @@ export const Objects = {
       alpha: true,
       powerPreference: "high-performance",
       antialias: false,
+      precision: "lowp",
     });
     renderer.setSize(sizes.width, sizes.height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
