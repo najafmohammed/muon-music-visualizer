@@ -231,6 +231,7 @@ const vizInit = async () => {
   play();
 
   file.onchange = function () {
+    playButton.style.visibility = "visible";
     params.reset();
     !buttonVariables.statsVisibility &&
       document.getElementById("stats").click();

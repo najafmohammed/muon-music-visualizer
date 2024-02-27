@@ -199,6 +199,7 @@ a:visited {
 }
 .play-audio {
   margin-right: 5px;
+  visibility: hidden;
 }
 .file-info-container > div {
   font-size: 1rem;
