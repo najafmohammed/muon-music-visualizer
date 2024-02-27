@@ -176,42 +176,10 @@ canvas {
   margin-bottom: 20px;
   transform-origin: bottom left;
 }
-.bg-video-wrapper {
-  z-index: 1;
-  opacity: 0.2;
-  position: relative;
-  min-width: 100%;
-  min-height: 100%;
-  justify-content: center;
-  display: flex;
-  align-items: center;
-}
-.bg-video-filter {
-  display: block;
-  min-width: 95%;
-  bottom: 5%;
-  top: 2%;
-  border-radius: 14%;
-  min-height: 93%;
-  background-color: black;
-  filter: blur(50px);
-  position: fixed;
-}
 .dg {
   z-index: 2 !important;
 }
-#bg-video {
-  filter: blur(190px) brightness(0.85) contrast(2.7);
-  min-width: 100%;
-  width: 100%;
-  min-height: 100%;
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  top: 0;
-  left: 0;
-  object-fit: cover;
-}
+
 video {
   display: block;
   margin: 0 auto;

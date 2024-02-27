@@ -3,14 +3,18 @@ import { Operations } from "../Utils/operations";
 import { globalParams } from "..";
 import { CoreControls } from ".";
 import { GUIControls } from "../GUI";
-import point from "../../static/textures/point.png";
+import point from "../../static/images/point.png";
 import { getCurl } from "../Utils/curl";
 import gsap from "gsap";
-// begin the shader optimizations
+// temp workaround to fix cors error use local file on finding fix
+// const texture = new THREE.TextureLoader().load(point);
+const texture = new THREE.TextureLoader().load(
+  "https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/sprites/circle.png"
+);
 export const Uniforms = {
   color: { value: new THREE.Color(0xffffff) },
   pointTexture: {
-    value: new THREE.TextureLoader().load(point),
+    value: texture,
   },
   time: {
     value: 1.0,
@@ -36,13 +40,13 @@ export const Uniforms = {
   spacing: {
     value: 1,
   },
-  redrawGeom: {
-    value: false,
-  },
   fieldDistortion: {
     value: 1,
   },
   delta: {
+    value: 0,
+  },
+  rippleDistanceScaling: {
     value: 0,
   },
 };
@@ -57,8 +61,6 @@ export const sineWavePropagation = (
   exponentialTrebleScaler,
   prevParams
 ) => {
-  let redrawGeom = false;
-
   const beatScaler =
     exponentialTrebleScaler * 3.14 + exponentialBassScaler * 6 + 0.7;
 
@@ -73,16 +75,8 @@ export const sineWavePropagation = (
   Uniforms.radiusMultiplier.value = params.radiusMultiplier;
   Uniforms.spacing.value = params.spacing;
   Uniforms.fieldDistortion.value = params.fieldDistortion;
+  Uniforms.rippleDistanceScaling.value = params.rippleDistanceScaling;
 
-  if (
-    prevParams.radiusMultiplier !== params.radiusMultiplier ||
-    prevParams.spacing !== params.spacing
-  ) {
-    redrawGeom = true;
-    prevParams.radiusMultiplier = params.radiusMultiplier;
-    prevParams.spacing = params.spacing;
-    Uniforms.redrawGeom.value = redrawGeom;
-  }
   const u_freqData = new Float32Array(params.maxPoints);
   let point = 0;
   if (wavesurfer.isPlaying()) {
@@ -135,7 +129,6 @@ export const wavePresetController = (params, _delta, particles) => {
     const rotation =
       Math.PI / ((globalParams.visualserPresetCounter + 1.1) % 3);
     particles.rotation.z = rotation;
-    console.log(rotation);
 
     globalParams.updateLock = true;
     if (!params.visualizationPreset) {
