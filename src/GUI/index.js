@@ -19,14 +19,6 @@ const gui = new GUI(),
         step: 0.01,
         folder: particleControlsFolder,
       },
-
-      {
-        name: "distortionStrength",
-        min: 0,
-        max: 2,
-        step: 0.01,
-        folder: particleControlsFolder,
-      },
       {
         name: "maxPoints",
         min: 0,
@@ -48,13 +40,7 @@ const gui = new GUI(),
         step: 0.01,
         folder: particleControlsFolder,
       },
-      {
-        name: "spiralMultiplier",
-        min: 0.001,
-        max: 0.05,
-        step: 0.0001,
-        folder: particleControlsFolder,
-      },
+
       {
         name: "idleMultiplier",
         min: 0,
@@ -104,13 +90,6 @@ const gui = new GUI(),
         step: 0.0001,
         folder: noiseControlsFolder,
       },
-      {
-        name: "batchDivision",
-        min: 0,
-        max: 256,
-        step: 1,
-        folder: noiseControlsFolder,
-      },
     ],
   },
   initGui = (params) => {
@@ -132,15 +111,6 @@ const gui = new GUI(),
     controlsGUI.emission.forEach((control) =>
       emissionControlsFolder.add(params, control)
     );
-    particleControlsFolder
-      .add(params, "fieldDistortion")
-      .min(1)
-      .max(20)
-      .step(0.1)
-      .listen()
-      .onChange((value) => {
-        params.updateLockInterval = value > 3 ? 0.17 : 0.07;
-      });
 
     controlsGUI.guiControls.forEach((control) => gui.add(params, control));
     gui.add(params, "sideView").name("side view");

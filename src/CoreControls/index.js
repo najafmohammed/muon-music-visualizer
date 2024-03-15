@@ -1,7 +1,7 @@
 import { BloomPass, AfterImage } from "./postProcessing";
 import { sineWavePropagation, wavePresetController } from "./wave";
 import { hueControl, coreBaseScaler } from "./effects";
-import { visualizationPresets, fieldDistortion } from "./params";
+import { visualizationPresets } from "./params";
 import { redrawGeometry } from "./controls";
 import { audioProcessing } from "./audio";
 
@@ -12,7 +12,6 @@ export const CoreControls = {
   coreBaseScaler,
   sineWavePropagation,
   visualizationPresets,
-  fieldDistortion,
   redrawGeometry,
   wavePresetController,
   audioProcessing,

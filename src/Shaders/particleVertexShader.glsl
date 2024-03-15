@@ -1,12 +1,9 @@
 uniform float time;
 uniform bool isPlaying;
-uniform float dStrength;
 uniform float beatScaler;
 uniform float radiusMultiplier;
 uniform float spacing;
-uniform float fieldDistortion;
 uniform float delta;
-uniform float spiralMultiplier;
 
 attribute float scale;
 attribute vec3 customColor;
@@ -33,7 +30,7 @@ float additiveWaveComponent(float sign) {
     float waveAngle = (sign == 0.0 ? sin(prevWave) : cos(prevWave));
     float waveRadius = (sign == 0.0 ? cos(nextWave) : sin(nextWave));
 
-    return waveAngle * (radii + fieldDistortion * waveRadius + u_freqData * 0.01) * spacing;
+    return waveAngle * (radii * waveRadius + u_freqData * 0.01) * spacing;
 }
 // float modulus(float a, float b) {
 //     return a - b * floor(a / b);
@@ -53,7 +50,7 @@ void main() {
     y = position.y;
     float ripleAngle = distanceFromOrigin * .3 + (_time) * .2;
     float ripple = cos(ripleAngle) * sin(ripleAngle) * (1.0 + delta * 10.0);
-    float spiral = (index * radiusMultiplier + radii) * spiralMultiplier;
+    float spiral = (index * radiusMultiplier + radii) * .005;
 
     float circleOffset = (beatScaler * 1.5 * (distanceFromOrigin * .1)) + 3.14 * sin(beatScaler * 3.14);
 
@@ -65,10 +62,9 @@ void main() {
 
     x = sin(cricleAngle) * cirleRadius;
     y = cos(cricleAngle) * cirleRadius;
-    float distortion = -sin(y * dStrength) * cos(x * dStrength);
+    float distortion = -sin(y * .3) * cos(x * .3);
     if(isPlaying) {
 
-        // float zTheta = sin(distanceFromOrigin * .3 - beatScaler * .2 - distortion);
         float freqAmp = u_freqData * .007;
         z = 3.14 * cos(-spiral) * 1.0;
 
@@ -77,18 +73,13 @@ void main() {
 
         gl_PointSize = z * distanceFromOrigin;
 
-        if(fieldDistortion != 1.0) {
-            x = additiveWaveComponent(0.0);
-            y = additiveWaveComponent(1.0);
-        }
-
     } else {
         z = 2.3 * sin(spiral + distanceFromOrigin - time - distortion);
         gl_PointSize = z * distanceFromOrigin * .08;
 
     }
-    if(gl_PointSize > 3.0) {
-        gl_PointSize = 3.0;
+    if(gl_PointSize > 4.0) {
+        gl_PointSize = 4.0;
     }
     vz = z;
     vx = x;
