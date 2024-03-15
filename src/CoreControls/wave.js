@@ -26,9 +26,6 @@ export const Uniforms = {
   isPlaying: {
     value: false,
   },
-  dStrength: {
-    value: 0.5,
-  },
   beatScaler: {
     value: 1.0,
   },
@@ -41,24 +38,30 @@ export const Uniforms = {
   spacing: {
     value: 1.0,
   },
-  fieldDistortion: {
-    value: 1.0,
-  },
   delta: {
     value: 0.0,
   },
-  spiralMultiplier: { value: 1.0 },
 };
 
-export const freqData = (dataArray, maxPoints, isPlaying) => {
-  let freqData = [];
-  dataArray.forEach((data) => data > 0.1 && freqData.push(data));
-  const u_freqData = new Float32Array(maxPoints);
+export const freqData = (dataArray, maxPoints, isPlaying, split = 1) => {
+  const _maxPoints = split > 1 ? maxPoints / split : maxPoints;
+
+  const u_freqData = new Float32Array(_maxPoints * (split > 1 ? split : 1));
   let point = 0;
   if (isPlaying) {
-    for (let ix = 0; ix < Operations.roundTo3(maxPoints); ix++) {
-      point = Math.floor(Operations.map(ix, 0, maxPoints, 0, freqData.length));
-      u_freqData[ix] = freqData[point];
+    for (let iy = 0; iy < split; iy++) {
+      for (let ix = 0; ix < _maxPoints; ix++) {
+        point = Math.floor(
+          Operations.map(
+            iy % 2 == 0 ? ix : _maxPoints - ix,
+            0,
+            _maxPoints,
+            0,
+            dataArray.length
+          )
+        );
+        u_freqData[ix + iy * _maxPoints] = dataArray[point];
+      }
     }
   }
   return u_freqData;
@@ -79,13 +82,10 @@ export const sineWavePropagation = (
 
   Uniforms.time.value = sineCounter;
   Uniforms.isPlaying.value = wavesurfer.isPlaying();
-  Uniforms.dStrength.value = params.distortionStrength;
   Uniforms.beatScaler.value = beatScaler;
   Uniforms.maxPoints.value = params.maxPoints;
   Uniforms.radiusMultiplier.value = params.radiusMultiplier;
   Uniforms.spacing.value = params.spacing;
-  Uniforms.fieldDistortion.value = params.fieldDistortion;
-  Uniforms.spiralMultiplier.value = params.spiralMultiplier;
   const u_freqData = freqData(
     dataArray,
     params.maxPoints,
@@ -137,22 +137,14 @@ export const wavePresetController = (params, _delta, particles) => {
       params.radiusMultiplier += _delta;
       params.radiusMultiplier = (params.radiusMultiplier % 1) + 0.001;
     }
-    if (params.fieldDistortion) {
-      if (params.visualizationPreset > CoreControls.fieldDistortion.length)
-        visualizationPreset = 0;
-    }
-    const fieldDistortionActive = params.fieldDistortion > 3;
-    const fieldDistortion =
-      CoreControls.fieldDistortion[globalParams.visualserPresetCounter];
+
     const vizPreset =
       CoreControls.visualizationPresets[globalParams.visualserPresetCounter];
     gsap.to(params, {
       duration: params.updateLockInterval,
       ease: "power4.out",
       radiusMultiplier: params.visualizationPreset
-        ? fieldDistortionActive
-          ? fieldDistortion
-          : vizPreset
+        ? vizPreset
         : params.radiusMultiplier,
     });
 
@@ -161,9 +153,7 @@ export const wavePresetController = (params, _delta, particles) => {
 
       globalParams.visualserPresetCounter =
         globalParams.visualserPresetCounter %
-        (fieldDistortionActive
-          ? CoreControls.fieldDistortion.length
-          : CoreControls.visualizationPresets.length);
+        CoreControls.visualizationPresets.length;
     }
   }
 };

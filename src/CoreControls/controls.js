@@ -11,9 +11,7 @@ export const redrawGeometry = (
     prevParams.maxPoints !== params.maxPoints ||
     prevParams.colorSpectrum !== params.colorSpectrum ||
     prevParams.aperture !== params.aperture ||
-    prevParams.spacing !== params.spacing ||
-    prevParams.distortionStrength !== params.distortionStrength ||
-    prevParams.fieldDistortion !== params.fieldDistortion
+    prevParams.spacing !== params.spacing
   ) {
     const prevScales = particles.geometry.attributes.scale.array;
     particles.geometry.dispose();
@@ -43,7 +41,5 @@ export const redrawGeometry = (
     prevParams.colorSpectrum = params.colorSpectrum;
     prevParams.aperture = params.aperture;
     prevParams.spacing = params.spacing;
-    prevParams.distortionStrength = params.distortionStrength;
-    prevParams.fieldDistortion = params.fieldDistortion;
   }
 };
