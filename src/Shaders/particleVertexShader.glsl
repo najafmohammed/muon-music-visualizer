@@ -52,7 +52,7 @@ void main() {
     float ripple = cos(ripleAngle) * sin(ripleAngle) * (1.0 + delta * 10.0);
     float spiral = (index * radiusMultiplier + radii) * .005;
 
-    float circleOffset = (beatScaler * 1.5 * (distanceFromOrigin * .1)) + 3.14 * sin(beatScaler * 3.14);
+    float circleOffset = (beatScaler * 1.5 * (distanceFromOrigin * .1)) + 2.0 * sin(beatScaler);
 
     if(!isPlaying) {
         circleOffset = (beatScaler * 1.5 * distanceFromOrigin * .1) + 3.14 * sin(time);

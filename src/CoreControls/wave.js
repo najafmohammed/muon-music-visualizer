@@ -43,7 +43,7 @@ export const Uniforms = {
   },
 };
 
-export const freqData = (dataArray, maxPoints, isPlaying, split = 1) => {
+export const freqData = (dataArray, maxPoints, isPlaying, split = 2) => {
   const _maxPoints = split > 1 ? maxPoints / split : maxPoints;
 
   const u_freqData = new Float32Array(_maxPoints * (split > 1 ? split : 1));
