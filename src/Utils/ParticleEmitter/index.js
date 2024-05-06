@@ -31,7 +31,7 @@ const Uniforms = {
 };
 
 const particles = [];
-const maxEmittedParticles = 256 * 2;
+const maxEmittedParticles = 256 * 3;
 
 var curlVelocity = new THREE.Vector3();
 
@@ -101,9 +101,11 @@ export const updateParticleAttributes = (
         ? beatScalerFactor * 0.3
         : beatScalerFactor;
   } else {
-    beatScaler = 0.1;
+    beatScaler = 0.2;
   }
   deltaBeatScaler = (beatScaler - deltaBeatScaler) % 0.1;
+  var velocityMultiplier = 1.0;
+
   particles.forEach((particle, i) => {
     const [x, y, z] = [
       positionsArray[i],
@@ -112,7 +114,7 @@ export const updateParticleAttributes = (
     ];
     freqDataArray[i] = u_freqData[i] < 0.1 ? 0.1 : u_freqData[i];
 
-    // const distanceFromOrigin = Operations.distanceFromOrigin(x, y);
+    const distanceFromOrigin = Operations.distanceFromOrigin(x, y) * 0.7;
 
     // Update particle properties
     particle.lifespan--;
@@ -123,7 +125,7 @@ export const updateParticleAttributes = (
       particle.size *
         ((particle.lifespan * beatScaler) /
           (particle.lifespan * beatScaler + 1)) +
-      0.5;
+      0.05;
 
     const angle =
       Math.PI *
@@ -132,8 +134,10 @@ export const updateParticleAttributes = (
 
     const freqDataNormalized = freqDataArray[i] / 255;
     radius = beatScaler * 15 + 5;
-    if (i % 8 == 0) radius += 3;
-    if (i % 4 == 0) radius += 5;
+    if (i % 8 == 0) radius += 2 + 2 * beatScaler;
+    if (i % 2 == 0) {
+      radius += 4 + 4 * beatScaler;
+    }
     if (i % 4 == 0) {
       const noiseForceScaler = isPlaying
         ? beatScaler > 0.1
@@ -154,8 +158,14 @@ export const updateParticleAttributes = (
         time * params.timeMult
       );
       curlVelocity = new THREE.Vector3(
-        curl.x * params.noiseForce * Math.sin(angle),
-        curl.y * params.noiseForce * Math.cos(angle),
+        curl.x *
+          params.noiseForce *
+          Math.sin(angle * distanceFromOrigin) *
+          velocityMultiplier,
+        curl.y *
+          params.noiseForce *
+          Math.cos(angle * distanceFromOrigin) *
+          velocityMultiplier,
         0
       );
 
@@ -174,9 +184,9 @@ export const updateParticleAttributes = (
     let _uAngle = angle;
 
     particle.velocity.set(
-      Math.sin(_uAngle) * _radius,
-      Math.cos(_uAngle) * _radius,
-      Math.sin(beatScaler * 0.7) + freqDataNormalized * 0.1
+      Math.sin(_uAngle) * _radius * velocityMultiplier,
+      Math.cos(_uAngle) * _radius * velocityMultiplier,
+      Math.sin(beatScaler * 0.7) + freqDataNormalized * 0.2 * velocityMultiplier
     );
     particle.position.add(particle.velocity);
 
@@ -188,7 +198,9 @@ export const updateParticleAttributes = (
       color.setHSL(c.h / 360, c.s, c.v);
     } else {
       color.setHSL(
-        isPlaying ? freqDataNormalized : i / maxEmittedParticles,
+        isPlaying && freqDataNormalized
+          ? freqDataNormalized
+          : i / maxEmittedParticles,
         0.7,
         0.5
       );
@@ -206,10 +218,6 @@ export const updateParticleAttributes = (
       ); // Reset Position
       particle.size = freqDataNormalized * 0.2 + 5 + (beatScaler < 0.1 ? 3 : 0);
 
-      // particle.lifespan = Math.abs(
-      //   Math.random() * (isPlaying ? params.lifespan : params.lifespan * 2) +
-      //     -(isPlaying ? beatScaler * 10 : 0)
-      // )*2; // Random lifespan
       particle.lifespan = params.lifespan;
       particle.alpha = 1;
     }

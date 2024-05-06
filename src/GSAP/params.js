@@ -45,17 +45,17 @@ export const gsapControlParams = {
   },
   cameraIntroMaxPoints: {
     duration: 1.0,
-    maxPoints: 1440,
+    maxPoints: 1080,
     delay: 0.5,
   },
   cameraIntroMaxPoints2: {
     duration: 0.5,
-    maxPoints: 2880,
+    maxPoints: 1440,
     delay: 1.5,
   },
   cameraIntroMaxPoints3: {
-    duration: 0.5,
-    maxPoints: 3960,
+    duration: 2.6,
+    maxPoints: 2880,
     delay: 2.0,
   },
   cameraIntroColorSpectrum: {
@@ -66,7 +66,7 @@ export const gsapControlParams = {
   cameraIntroColorSpectrumCorrection: {
     duration: 3,
     ease: "steps(4)",
-    divisions: 2,
+    divisions: 12,
     colorSpectrum: 18,
     delay: 1.5,
   },
