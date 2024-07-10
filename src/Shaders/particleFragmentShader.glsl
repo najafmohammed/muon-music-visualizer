@@ -14,7 +14,7 @@ void main() {
     if(vScale < .5)
         discard;
 
-    if(vz < 1.0)
+    if(vz < -1.0)
         discard;
 
     gl_FragColor = vec4((color * vColor), 1.0);

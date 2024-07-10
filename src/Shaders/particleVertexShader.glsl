@@ -75,9 +75,10 @@ void main() {
 
     } else {
         z = 2.3 * sin(spiral + distanceFromOrigin - time - distortion);
-        gl_PointSize = z * distanceFromOrigin * .08;
+        gl_PointSize = z * distanceFromOrigin * .05;
 
     }
+    gl_PointSize = gl_PointSize + 1.0;
     if(gl_PointSize > 4.0) {
         gl_PointSize = 4.0;
     }

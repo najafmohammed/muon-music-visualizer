@@ -55,7 +55,7 @@ export const gsapControlParams = {
   },
   cameraIntroMaxPoints3: {
     duration: 2.6,
-    maxPoints: 2880,
+    maxPoints: 3960,
     delay: 2.0,
   },
   cameraIntroColorSpectrum: {

@@ -155,9 +155,12 @@ const vizInit = async () => {
       composer.render();
 
       if (!wavesurfer.isPlaying()) {
+        params.divisions = (params.divisions + 1 * timeDelta) % 150;
         params.radiusMultiplier =
           (params.radiusMultiplier + 0.00012 * timeDelta) % 1;
       } else {
+        params.divisions = 16;
+
         duration.innerHTML = Operations.formatTime(wavesurfer.getDuration());
         currentTime.innerHTML = Operations.formatTime(
           wavesurfer.getCurrentTime()
