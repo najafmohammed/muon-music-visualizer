@@ -104,7 +104,8 @@ export const updateParticleAttributes = (
     beatScaler = 0.2;
   }
   deltaBeatScaler = (beatScaler - deltaBeatScaler) % 0.1;
-  var velocityMultiplier = 1.0;
+  // var velocityMultiplier = 0.1;
+  var velocityMultiplier = beatScaler * 4;
 
   particles.forEach((particle, i) => {
     const [x, y, z] = [
@@ -120,25 +121,26 @@ export const updateParticleAttributes = (
     particle.lifespan--;
 
     particle.alpha = Math.max(particle.lifespan * 0.1, 0);
+    const breakpoint = particle.lifespan / params.lifespan;
 
     particle.size =
       particle.size *
         ((particle.lifespan * beatScaler) /
           (particle.lifespan * beatScaler + 1)) +
-      0.05;
+      0.01;
 
-    const angle =
+    let angle =
       Math.PI *
       params.divisions *
       (i % 2 == 0 ? i / maxEmittedParticles : 1 - i / maxEmittedParticles);
 
     const freqDataNormalized = freqDataArray[i] / 255;
-    radius = beatScaler * 15 + 5;
-    if (i % 8 == 0) radius += 2 + 2 * beatScaler;
-    if (i % 2 == 0) {
-      radius += 4 + 4 * beatScaler;
+    radius = 5 + beatScaler * 15;
+    if (breakpoint > 0.5) {
+      angle += 0.1;
+      radius += 0.1;
     }
-    if (i % 4 == 0) {
+    if (i % 2 == 0) {
       const noiseForceScaler = isPlaying
         ? beatScaler > 0.1
           ? beatScaler
@@ -171,22 +173,23 @@ export const updateParticleAttributes = (
 
       curlVelocity.x && curlVelocity.y && particle.position.add(curlVelocity);
     }
-    const breakpoint = particle.lifespan / params.lifespan;
-    particle.alpha = Math.abs(Math.sin(breakpoint * 2));
+    particle.alpha = Math.abs(Math.sin(breakpoint));
     alpha[i] = Math.min(particle.alpha, 1);
 
     const _radius =
-      (freqDataNormalized * 0.01 + breakpoint * 0.04) * 0.03 +
+      freqDataNormalized * 0.03 +
+      breakpoint * 0.04 +
       Math.sin(beatScaler * 5 + deltaBeatScaler) * deltaBeatScaler +
-      0.02 +
-      deltaBeatScaler * 0.5;
+      deltaBeatScaler * 4 +
+      // freqDataNormalized * 0.04 +
+      0.01;
 
     let _uAngle = angle;
 
     particle.velocity.set(
       Math.sin(_uAngle) * _radius * velocityMultiplier,
       Math.cos(_uAngle) * _radius * velocityMultiplier,
-      Math.sin(beatScaler * 0.7) + freqDataNormalized * 0.2 * velocityMultiplier
+      Math.sin(beatScaler * 0.7) + freqDataNormalized * 0.3 * velocityMultiplier
     );
     particle.position.add(particle.velocity);
 
@@ -195,7 +198,13 @@ export const updateParticleAttributes = (
     sizesArray[i] = particle.size;
     if (params.enableMonoColor) {
       const c = params.monoColor;
-      color.setHSL(c.h / 360, c.s, c.v);
+      if (i > maxEmittedParticles * 0.77) {
+        color.setHSL((c.h + 30) / 360, c.s, c.v);
+      } else if (i > maxEmittedParticles * 0.33) {
+        color.setHSL(c.h / 360, c.s, c.v);
+      } else {
+        color.setHSL((c.h - 30) / 360, c.s, c.v);
+      }
     } else {
       color.setHSL(
         isPlaying && freqDataNormalized
@@ -213,11 +222,10 @@ export const updateParticleAttributes = (
       particle.position.set(
         Math.sin(angle) * radius,
         Math.cos(angle) * radius,
-        Math.sin(beatScaler * i)
+        Math.sin(beatScaler * i) + 5
         // 0
       ); // Reset Position
-      particle.size = freqDataNormalized * 0.2 + 5 + (beatScaler < 0.1 ? 3 : 0);
-
+      particle.size = freqDataNormalized * 2 + 20 + (beatScaler <= 0.1 ? 2 : 0);
       particle.lifespan = params.lifespan;
       particle.alpha = 1;
     }

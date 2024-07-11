@@ -2,9 +2,9 @@ import * as THREE from "three";
 import { AfterimagePass } from "three/examples/jsm/postprocessing/AfterimagePass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 const params = {
-  bloomStrength: 0.7,
+  bloomStrength: 0.5,
   bloomThreshold: 0.35,
-  bloomRadius: 0.86,
+  bloomRadius: 0.66,
 };
 
 export const BloomPass = new UnrealBloomPass(

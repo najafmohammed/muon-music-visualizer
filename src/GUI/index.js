@@ -65,7 +65,7 @@ const gui = new GUI(),
       {
         name: "divisions",
         min: 1,
-        max: 15,
+        max: 150,
         step: 1,
         folder: emissionControlsFolder,
       },
