@@ -6,10 +6,13 @@ import { Operations } from "../operations";
 import { freqData } from "../../CoreControls/wave";
 import { getCurl } from "../curl";
 
+const sin = Math.sin;
+const cos = Math.cos;
+const abs = Math.abs;
 class Particle {
   constructor(index) {
     this.velocity = new THREE.Vector3(1, 1, 1);
-    this.position = new THREE.Vector3(Math.sin(index), Math.cos(index), 0);
+    this.position = new THREE.Vector3(sin(index), cos(index), 0);
     this.lifespan = 1;
     this.color = new THREE.Color();
     this.size = 1;
@@ -65,6 +68,7 @@ export const emitParticle = (
   }
 };
 let deltaBeatScaler = 0;
+
 // Update particle attributes
 let radius = 0;
 export const updateParticleAttributes = (
@@ -98,14 +102,13 @@ export const updateParticleAttributes = (
         : beatScalerFactor > 0.1 && beatScalerFactor < 0.4
         ? beatScalerFactor * 0.5
         : beatScalerFactor > 0.4
-        ? beatScalerFactor * 0.3
+        ? beatScalerFactor * 0.2
         : beatScalerFactor;
   } else {
     beatScaler = 0.2;
   }
   deltaBeatScaler = (beatScaler - deltaBeatScaler) % 0.1;
   // var velocityMultiplier = 0.1;
-  var velocityMultiplier = beatScaler * 4;
 
   particles.forEach((particle, i) => {
     const [x, y, z] = [
@@ -122,6 +125,7 @@ export const updateParticleAttributes = (
 
     particle.alpha = Math.max(particle.lifespan * 0.1, 0);
     const breakpoint = particle.lifespan / params.lifespan;
+    const freqDataNormalized = freqDataArray[i] / 255;
 
     particle.size =
       particle.size *
@@ -134,7 +138,14 @@ export const updateParticleAttributes = (
       params.divisions *
       (i % 2 == 0 ? i / maxEmittedParticles : 1 - i / maxEmittedParticles);
 
-    const freqDataNormalized = freqDataArray[i] / 255;
+    var velocityMultiplier =
+      0.1 +
+      beatScaler *
+        5 *
+        abs(sin(angle * beatScaler) * cos(angle * beatScaler)) *
+        freqDataNormalized *
+        0.7;
+
     radius = 5 + beatScaler * 15;
     if (breakpoint > 0.5) {
       angle += 0.1;
@@ -159,27 +170,30 @@ export const updateParticleAttributes = (
         y * params.noiseScale,
         time * params.timeMult
       );
-      curlVelocity = new THREE.Vector3(
+
+      curlVelocity.set(
         curl.x *
           params.noiseForce *
-          Math.sin(angle * distanceFromOrigin) *
-          velocityMultiplier,
+          sin(angle * distanceFromOrigin) *
+          velocityMultiplier *
+          1.7,
         curl.y *
           params.noiseForce *
-          Math.cos(angle * distanceFromOrigin) *
-          velocityMultiplier,
+          cos(angle * distanceFromOrigin) *
+          velocityMultiplier *
+          1.7,
         0
       );
 
       curlVelocity.x && curlVelocity.y && particle.position.add(curlVelocity);
     }
-    particle.alpha = Math.abs(Math.sin(breakpoint));
+    particle.alpha = abs(sin(breakpoint));
     alpha[i] = Math.min(particle.alpha, 1);
 
     const _radius =
       freqDataNormalized * 0.03 +
       breakpoint * 0.04 +
-      Math.sin(beatScaler * 5 + deltaBeatScaler) * deltaBeatScaler +
+      sin(beatScaler * 5 + deltaBeatScaler) * deltaBeatScaler +
       deltaBeatScaler * 4 +
       // freqDataNormalized * 0.04 +
       0.01;
@@ -187,9 +201,9 @@ export const updateParticleAttributes = (
     let _uAngle = angle;
 
     particle.velocity.set(
-      Math.sin(_uAngle) * _radius * velocityMultiplier,
-      Math.cos(_uAngle) * _radius * velocityMultiplier,
-      Math.sin(beatScaler * 0.7) + freqDataNormalized * 0.3 * velocityMultiplier
+      sin(_uAngle) * _radius * velocityMultiplier,
+      cos(_uAngle) * _radius * velocityMultiplier,
+      freqDataNormalized * 0.7 * velocityMultiplier
     );
     particle.position.add(particle.velocity);
 
@@ -219,12 +233,13 @@ export const updateParticleAttributes = (
     // Recycle particles whose lifespan has ended
 
     if (particle.lifespan <= 0) {
+      const amplitude = 0.05;
+      const frequency = 16;
       particle.position.set(
-        Math.sin(angle) * radius,
-        Math.cos(angle) * radius,
-        Math.sin(beatScaler * i) + 5
-        // 0
-      ); // Reset Position
+        (sin(angle) + amplitude * sin(time + angle * frequency)) * radius,
+        (cos(angle) + amplitude * cos(time + angle * frequency)) * radius,
+        sin(beatScaler * i) + 5
+      );
       particle.size = freqDataNormalized * 2 + 20 + (beatScaler <= 0.1 ? 2 : 0);
       particle.lifespan = params.lifespan;
       particle.alpha = 1;
