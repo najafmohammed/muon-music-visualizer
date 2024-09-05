@@ -19,8 +19,6 @@ void main() {
     vColor = colors;
     vAlpha = alpha;
     gl_PointSize = size;
-    if(gl_PointSize > 7.0)
-        gl_PointSize = 7.0;
 
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 

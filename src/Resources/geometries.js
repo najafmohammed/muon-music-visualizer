@@ -61,10 +61,7 @@ export const generateParticlesSpiral = (
   );
   geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
   geometry.setAttribute("index", new THREE.BufferAttribute(index, 1));
-  geometry.setAttribute(
-    "scale",
-    new THREE.BufferAttribute(isPlaying ? prevScales : scales, 1)
-  );
+  geometry.setAttribute("scale", new THREE.BufferAttribute(scales, 1));
   return geometry;
 };
 
