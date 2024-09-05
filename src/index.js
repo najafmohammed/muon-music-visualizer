@@ -53,9 +53,9 @@ let params = {
     deltaResponseLimit: 0.005,
     visualizationPreset: true,
     spacing: 1,
-    syncColors: false,
-    divisions: 6,
-    lifespan: 100,
+    syncColors: true,
+    divisions: 21,
+    lifespan: 200,
     noiseScale: 0.3,
     noiseForce: 1,
     timeMult: 0.01,
@@ -155,11 +155,11 @@ const vizInit = async () => {
       composer.render();
 
       if (!wavesurfer.isPlaying()) {
-        params.divisions = (params.divisions + 1 * timeDelta) % 150;
         params.radiusMultiplier =
           (params.radiusMultiplier + 0.00012 * timeDelta) % 1;
+        params.spacing = 1;
       } else {
-        params.divisions = 16;
+        params.spacing = 0.6;
 
         duration.innerHTML = Operations.formatTime(wavesurfer.getDuration());
         currentTime.innerHTML = Operations.formatTime(
