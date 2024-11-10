@@ -176,6 +176,36 @@ canvas {
   margin-bottom: 20px;
   transform-origin: bottom left;
 }
+.video-controls {
+  bottom: 25px;
+  left: 19px;
+  text-align: start;
+  position: relative;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.3));
+  width: 250px;
+  justify-content: space-between;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transition: all 0.4s ease-in-out;
+  border-radius: 0 0 19px 19px;
+  padding: 0 10px;
+  transform: translateY(20px);
+}
+.video-controls .lock {
+  width: 20px;
+  height: 25px;
+  transition: all 0.9s ease-in-out;
+}
+.video-controls .zoom-control {
+  text-align: center;
+  transition: all 0.9s ease-in-out;
+}
+.reset {
+  transform: translateY(0) !important;
+  opacity: 1;
+}
 .dg {
   z-index: 2 !important;
 }
@@ -186,16 +216,17 @@ video {
 }
 
 .album-art {
-  bottom: 15.87px !important;
+  bottom: 25.87px !important;
   left: 19px !important;
   clip-path: inset(0.5px 0.5px);
 }
 .album-art-common {
   object-fit: cover;
+  position: relative;
   border-radius: 15px;
   overflow: hidden;
   display: block;
-  bottom: 10px;
+  bottom: 20px;
   left: 10px;
   position: absolute;
 }

@@ -76,21 +76,24 @@
     <div class="bottom-container">
       <div class="action-bar-container">
         <div class="music-control">
-          <div class="album-art-container-wrapper">
-            <div class="album-art-container" id="album-art-container">
-              <video
-                disablepictureinpicture
-                class="album-art-common album-art-ambient"
-                id="video-frame-ambient"
-                width="270px"
-              ></video>
-              <video
-                disablepictureinpicture
-                class="album-art-common album-art"
-                id="video-frame"
-                width="250px"
-              ></video>
+          <div class="album-art-container" id="album-art-container">
+            <div class="video-controls" id="video-controls">
+              <div class="zoom-control" id="zoom-control">1.0x</div>
+              <img alt="lockIcon" class="lock" id="lock" />
             </div>
+
+            <video
+              disablepictureinpicture
+              class="album-art-common album-art-ambient"
+              id="video-frame-ambient"
+              width="270px"
+            ></video>
+            <video
+              disablepictureinpicture
+              class="album-art-common album-art"
+              id="video-frame"
+              width="250px"
+            ></video>
           </div>
 
           <div id="album-art-image" alt="album art"></div>

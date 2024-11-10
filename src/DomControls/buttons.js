@@ -2,6 +2,7 @@ import { toggleFullScreen } from "../Utils/fullScreen";
 import volumeIcon from "../../static/images/volume.png";
 import mute from "../../static/images/mute.png";
 import { GUIControls } from "../GUI";
+import { invertLockScale } from "../DomControls/video";
 
 let isPaused = true,
   immersiveVisibility = true,
@@ -14,6 +15,7 @@ const playAudioButton = document.getElementById("play-audio");
 const toggleFullscreenButton = document.getElementById("toggle-fullscreen");
 const statisticsButton = document.getElementById("stats");
 const volumeButton = document.getElementById("volumeIcon");
+const lockButton = document.getElementById("lock");
 
 export const volumeButtonControl = (wavesurfer) => {
   volumeButton.src = volumeIcon;
@@ -59,6 +61,16 @@ const toggleFullscreenButtonConttrol = () =>
     },
     { passive: true }
   );
+
+const lockButtonControl = () =>
+  lockButton.addEventListener(
+    "click",
+    () => {
+      invertLockScale();
+    },
+    { passive: true }
+  );
+
 const statisticsButtonControl = () =>
   statisticsButton.addEventListener(
     "click",
@@ -87,4 +99,5 @@ export const initButtonControls = (wavesurfer, video, ambient) => {
   volumeButtonControl(wavesurfer);
   toggleFullscreenButtonConttrol();
   statisticsButtonControl();
+  lockButtonControl();
 };
