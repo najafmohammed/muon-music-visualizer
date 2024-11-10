@@ -130,7 +130,9 @@ export const updateParticleAttributes = (
 
     let angle = Math.PI * params.divisions * (i / maxEmittedParticles);
 
-    var velocityMultiplier = !isPlaying ? 1 : 0.05 + deltaBeatScaler * 6;
+    var velocityMultiplier = !isPlaying
+      ? 1
+      : 0.05 + deltaBeatScaler + beatScaler * 2.7;
 
     radius = 6 + beatScaler * 10;
     if (breakpoint > 0.5) {
@@ -180,7 +182,18 @@ export const updateParticleAttributes = (
     // Update attributes arrays
     particle.position.toArray(positionsArray, i * 3);
     sizesArray[i] = particle.size;
+    const distanceFromOrigin = Operations.distanceFromOrigin(x, y);
 
+    if (params.enableMonoColor) {
+      const c = params.monoColor;
+      color.setHSL(c.h / 360, c.s, c.v);
+    } else {
+      color.setHSL(
+        Math.abs(0.1 * (i / maxEmittedParticles) * params.colorSpectrum),
+        0.5,
+        0.5
+      );
+    }
     color.toArray(colorsArray, i * 3);
 
     // Recycle particles whose lifespan has ended

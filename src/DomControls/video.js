@@ -1,8 +1,16 @@
 let currentScale = 2;
 let lockScale = false;
+
+// Setter for lockScale
+export function invertLockScale(value) {
+  lockScale = !lockScale;
+}
 let maxSize;
 
 const videoContainer = document.getElementById("album-art-container");
+const zoomControl = document.getElementById("zoom-control");
+const videoControl = document.getElementById("video-controls");
+const lock = document.getElementById("lock");
 
 const wheelHandler = (event) => {
   if (!lockScale) {
@@ -11,20 +19,25 @@ const wheelHandler = (event) => {
     maxSize = currentScale >= 3.5;
     currentScale += delta;
     videoContainer.style.scale = currentScale;
+    zoomControl.innerHTML = `${currentScale.toFixed(1)}x`;
   }
 };
 const mouseLeaveHandler = (event) => {
   if (!lockScale) {
     videoContainer.style.scale = 1;
+    videoControl.style.opacity = 0;
     videoContainer.style.opacity = 0.5;
+    videoControl.classList.remove("reset");
   }
 };
 const mouseEnterHandler = (event) => {
   videoContainer.style.scale = currentScale > 1 && currentScale;
   videoContainer.style.opacity = 1;
+  videoControl.style.opacity = 1;
+  videoControl.classList.add("reset");
 };
 const dblClickHandler = (event) => {
-  lockScale = !lockScale;
+  lock.click();
   lockScale && (videoContainer.style.opacity = 1);
 };
 const removeListners = () => {

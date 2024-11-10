@@ -2,6 +2,8 @@ import pause from "../../static/images/pause.png";
 import play from "../../static/images/play.png";
 import expand from "../../static/images/expand.png";
 import collapse from "../../static/images/collapse.png";
+import lock from "../../static/images/lock.png";
+import unlock from "../../static/images/unlock.png";
 import stats from "../../static/images/stats.png";
 import creativeCommons from "../../static/images/creativeCommons.png";
 
@@ -11,6 +13,7 @@ let state = {
   audioPaused: true,
   statsClose: true,
   notMuted: true,
+  unlock: true,
 };
 
 export const toggleParams = [
@@ -39,4 +42,5 @@ export const toggleParams = [
     img1: stats,
     img2: creativeCommons,
   },
+  { element: "lock", state: state.unlock, img1: unlock, img2: lock },
 ];
