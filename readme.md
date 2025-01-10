@@ -23,6 +23,10 @@ npm start
 npm run build
 ```
 
+- latest
+https://github.com/user-attachments/assets/d5f98b1b-bd11-43cf-9226-4680a55ccd38
+
+
 ![demo](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWU5MTFhZmVlOGRkZGZkNzdlY2ZiMmE4MWY1MjI1ZGVjYTgwMjQ1YSZjdD1n/ZXH3icbiYqzZCSWdJg/giphy.gif)
 
 Demo: https://muon-vis.netlify.app/
